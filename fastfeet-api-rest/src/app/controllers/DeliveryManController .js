@@ -1,20 +1,19 @@
-import Recipients from "../models/Recipients";
+import DeliveryMan from "../models/DeliveryMan";
 import Sequelize from "sequelize";
 
-class RecipientsController {
+class DeliveryManController {
   async show(req, res) {
-    const rec = await Recipients.findByPk(req.params.id);
+    const rec = await DeliveryMan.findByPk(req.params.id);
     return res.json(rec);
   }
 
   async showAll(req, res) {
-    const rec = await Recipients.findAll();
+    const rec = await DeliveryMan.findAll();
     return res.json(rec);
   }
 
   async create(req, res) {
-    console.log(req.name);
-    const rec = await Recipients.create({
+    const rec = await DeliveryMan.create({
       ...req.body
     });
 
@@ -22,9 +21,7 @@ class RecipientsController {
   }
 
   async update(req, res) {
-    console.log(req.body);
-    console.log(req.params.id);
-    Recipients.update(req.body, {
+    DeliveryMan.update(req.body, {
       returning: false,
       where: { id: req.params.id }
     }).then(function(rowsUpdated) {
@@ -33,7 +30,7 @@ class RecipientsController {
   }
 
   async delete(req, res) {
-    Recipients.destroy({
+    DeliveryMan.destroy({
       where: {
         id: req.params.id
       }
@@ -49,12 +46,12 @@ class RecipientsController {
     // return res.send();
   }
 
-  async findRecipientByname(req, res) {
+  async findDeliveryManByname(req, res) {
     const Op = Sequelize.Op;
     const filter = req.query.filter;
     let response = [];
     if (filter !== undefined) {
-      response = await Recipients.findAll({
+      response = await DeliveryMan.findAll({
         where: {
           name: {
             [Op.like]: `%${filter}%`
@@ -62,11 +59,11 @@ class RecipientsController {
         }
       });
     } else {
-      response = await Recipients.findAll();
+      response = await DeliveryMan.findAll();
     }
 
     return res.json({ response });
   }
 }
 
-export default new RecipientsController();
+export default new DeliveryManController();
