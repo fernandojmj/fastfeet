@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 import ReactToolTip from "react-tooltip";
 import {
   getDeliveryRequest,
-  getDeliveryByEncomendaRequest
+  getDeliveryByEncomendaRequest,
+  selectProdutos
 } from "~/store/modules/delivery/actions";
 import { format } from "date-fns";
 import pt from "date-fns/locale/pt";
@@ -39,6 +40,7 @@ import { de } from "date-fns/locale";
 export default function Dashboard() {
   const dispatch = useDispatch();
   let deliverys = useSelector(state => state.delivery.deliverys);
+  let linhas = useSelector(state => state.delivery.produtos);
 
   const [open, setOpen] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState(deliverys[1]);
@@ -46,37 +48,27 @@ export default function Dashboard() {
   function handleClickOpen(delivery) {
     setOpen(true);
     console.tron.log("Valor selecionado");
-    console.tron.log(delivery);
     setSelectedValue(delivery);
-  }
-
-  function handleClicked(delivery) {
-    console.tron.log(delivery);
   }
 
   const handleClose = value => {
     setOpen(false);
   };
 
+  async function handleItem(idDelivery) {
+    dispatch(selectProdutos(linhas, idDelivery));
+  }
+
   useEffect(() => {
     let response;
     async function getMeetUps() {
       response = dispatch(getDeliveryRequest());
-
-      console.tron.log("deliverys");
-      console.tron.log(deliverys);
     }
     getMeetUps();
   }, []);
 
   async function seachByEncomenda(event) {
-    console.tron.log("seachByEncomenda: " + event.target.value);
-    console.tron.log("seachByEncomenda: " + event.key);
-    console.tron.log("seachByEncomenda: " + event.target.name);
     dispatch(await getDeliveryByEncomendaRequest(`${event.target.value}`));
-
-    console.tron.log("deliverys filter");
-    // console.tron.log(deliverys);
   }
 
   function formatarDate(data) {
@@ -135,47 +127,30 @@ export default function Dashboard() {
               {delivery.status}
             </p>
           </Status>
-          {/* //funciona
-          <p onClick={() => handleClickOpen(delivery)}>
-            <img src={visualizar} alt="Visualizar" /> Visualizar
-          </p> */}
-          <Acoes>
-            <a data-tip="React-tooltip">
-              <Acao>
-                <p></p>
-                <p></p>
-                <p></p>
-              </Acao>
-            </a>
 
-            <ReactToolTip
-              place="bottom"
-              type="light"
-              effect="solid"
-              globalEventO="click"
-              className="customeTheme"
-              clickable={true}
-              delayHide={1000}
+          <Acoes>
+            <Acao
+              key={delivery.id}
+              onMouseOver={() => handleItem(delivery.id)}
+              onClick={() => handleItem(delivery.id)}
             >
-              <AcaoList>
-                //Não funciona
-                <p onClick={() => handleClicked(delivery)}>
-                  <img src={visualizar} alt="Visualizar" /> Visualizar
-                </p>
-                <div></div>
-                <Link to="/">
-                  <p>
-                    <img src={caneta} alt="editar" /> Editar
-                  </p>
-                </Link>
-                <div></div>
-                <Link to="/profile">
-                  <p>
-                    <img src={lixeira} alt="Excluir" /> Excluir
-                  </p>
-                </Link>
-              </AcaoList>
-            </ReactToolTip>
+              <p></p>
+              <p></p>
+              <p></p>
+            </Acao>
+            <AcaoList produto={linhas[delivery.id]}>
+              <p onClick={() => handleClickOpen(delivery)}>
+                <img src={visualizar} alt="Visualizar" /> Visualizar
+              </p>
+              <div></div>
+              <p>
+                <img src={caneta} alt="editar" /> Editar
+              </p>
+              <div></div>
+              <p>
+                <img src={lixeira} alt="Excluir" /> Excluir
+              </p>
+            </AcaoList>
           </Acoes>
         </ENCOMENDAS>
       ))}

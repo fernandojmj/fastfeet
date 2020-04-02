@@ -1,5 +1,5 @@
 import { takeLatest, all, call, put } from "redux-saga/effects";
-import { getDeliverySuccess } from "./actions";
+import { getDeliverySuccess, selectProdutosSucess } from "./actions";
 import { toast } from "react-toastify";
 import api from "~/services/api";
 import history from "~/services/history";
@@ -92,8 +92,25 @@ export function* getDeliverysByEncomenda({ payload }) {
   // }
 }
 
+export function* selectProdutos({ payload }) {
+  // try {
+  console.tron.log("payload " + payload.data);
+  let produtos = payload.data;
+  let id = payload.id;
+
+  // produtos = [...produtos, (produtos[id] : !produtos[id])];
+
+  console.tron.log("Produtos");
+  console.tron.log(produtos);
+
+  yield put(selectProdutosSucess(produtos));
+
+  history.push("/dashboard");
+}
+
 export default all([
   takeLatest("@delivery/SAVE_MEET_REQUEST", saveMeet),
   takeLatest("@delivery/GET_DELIVERY_REQUEST", getDeliverys),
-  takeLatest("@delivery/GET_DELIVERY_FILTER_REQUEST", getDeliverysByEncomenda)
+  takeLatest("@delivery/GET_DELIVERY_FILTER_REQUEST", getDeliverysByEncomenda),
+  takeLatest("@delivery/GET_DELIVERY_SELECT_PRODUTOS_REQUEST", selectProdutos)
 ]);

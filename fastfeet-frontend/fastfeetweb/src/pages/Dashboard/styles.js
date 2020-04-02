@@ -309,11 +309,16 @@ export const Acoes = styled.div`
 export const AcaoList = styled.div`
   font-size: 12px;
   color: black;
+  display: ${props => (props.produto ? "block" : "none")};
+  background-color: white;
+  margin-top: 5px;
+  padding-right: 30px;
+  position: absolute;
+  /* margin-left: 10px; */
   img {
     height: 20px;
     margin-top: 2px;
   }
   p {
-    display: flex;
   }
 `;

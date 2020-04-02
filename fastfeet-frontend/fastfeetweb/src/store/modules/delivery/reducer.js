@@ -2,7 +2,8 @@ import produce from "immer";
 
 const INITTIAL_STATE = {
   deliverys: [],
-  delivery
+  delivery,
+  produtos: []
 };
 
 export default function delivery(state = INITTIAL_STATE, action) {
@@ -19,6 +20,15 @@ export default function delivery(state = INITTIAL_STATE, action) {
     case "@delivery/GET_DELIVERY_SUCCESS":
       return produce(state, draft => {
         draft.deliverys = action.payload.data;
+
+        draft.deliverys.map(d => {
+          draft.produtos[d.id] = false;
+        });
+      });
+
+    case "@delivery/SELECT_PRODUTOS_SUCCESS":
+      return produce(state, draft => {
+        draft.produtos[action.payload.id] = !draft.produtos[action.payload.id];
       });
 
     default:

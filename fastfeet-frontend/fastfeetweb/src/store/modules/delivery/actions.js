@@ -5,10 +5,25 @@ export function getDeliveryRequest() {
 }
 
 export function getDeliveryByEncomendaRequest(data) {
-  console.tron.log("Action DAta " + data);
   return {
     type: "@delivery/GET_DELIVERY_FILTER_REQUEST",
     payload: { data }
+  };
+}
+
+export function selectProdutos(data, id) {
+  console.tron.log(data);
+  console.tron.log(id);
+  return {
+    type: "@delivery/SELECT_PRODUTOS_SUCCESS",
+    payload: { data, id }
+  };
+}
+
+export function selectProdutosSucess(data, id) {
+  return {
+    type: "@delivery/SELECT_PRODUTOS_SUCCESS",
+    payload: { data, id }
   };
 }
 
