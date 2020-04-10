@@ -1,16 +1,15 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { takeLatest, all, call, put } from "redux-saga/effects";
-import { Link } from "react-router-dom";
-import ReactToolTip from "react-tooltip";
+import Avatar from "@material-ui/core/Avatar";
+import { makeStyles } from "@material-ui/core/styles";
+import { deepOrange, deepPurple } from "@material-ui/core/colors";
 import {
   getDeliveryRequest,
   getDeliveryByEncomendaRequest,
-  selectProdutos
+  selectProdutos,
+  DeleteDeliveryRequest,
 } from "~/store/modules/delivery/actions";
-import { format } from "date-fns";
-import pt from "date-fns/locale/pt";
-import api from "~/services/api";
+
 import "./styles.css";
 
 import caneta from "~/assets/caneta_edit.png";
@@ -32,15 +31,13 @@ import {
   Status,
   Acao,
   AcaoList,
-  Acoes
+  Acoes,
 } from "~/pages/Dashboard/styles";
-import { de } from "date-fns/locale";
-// import { Container } from './styles';
 
 export default function Dashboard() {
   const dispatch = useDispatch();
-  let deliverys = useSelector(state => state.delivery.deliverys);
-  let linhas = useSelector(state => state.delivery.produtos);
+  let deliverys = useSelector((state) => state.delivery.deliverys);
+  let linhas = useSelector((state) => state.delivery.produtos);
 
   const [open, setOpen] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState(deliverys[1]);
@@ -51,12 +48,22 @@ export default function Dashboard() {
     setSelectedValue(delivery);
   }
 
-  const handleClose = value => {
+  const handleClose = (value) => {
     setOpen(false);
   };
 
   async function handleItem(idDelivery) {
     dispatch(selectProdutos(linhas, idDelivery));
+  }
+
+  async function handleDeleteItem(idDelivery) {
+    if (
+      window.confirm(
+        "Tem certeza que deseja excluir encomenda: " + idDelivery + " ?"
+      )
+    ) {
+      dispatch(DeleteDeliveryRequest(idDelivery));
+    }
   }
 
   useEffect(() => {
@@ -71,10 +78,25 @@ export default function Dashboard() {
     dispatch(await getDeliveryByEncomendaRequest(`${event.target.value}`));
   }
 
-  function formatarDate(data) {
-    const dateFormated = format(new Date(data), "d 'de' MMMM", { locale: pt });
-    return dateFormated;
-  }
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      display: "flex",
+
+      "& > *": {
+        margin: theme.spacing(2),
+      },
+    },
+    orange: {
+      color: theme.palette.getContrastText(deepOrange[500]),
+      backgroundColor: deepOrange[500],
+    },
+    purple: {
+      color: theme.palette.getContrastText(deepPurple[500]),
+      backgroundColor: deepPurple[500],
+    },
+  }));
+
+  const classes = useStyles();
 
   return (
     <Container>
@@ -85,7 +107,7 @@ export default function Dashboard() {
         <InputSearch
           name="search"
           placeholder="Buscar por Encomendas"
-          onChange={e => seachByEncomenda(e)}
+          onChange={(e) => seachByEncomenda(e)}
         ></InputSearch>
         <a href="/newMeet">
           <button> CADASTRAR</button>
@@ -104,23 +126,35 @@ export default function Dashboard() {
       </HEADERTABLE>
       {selectedValue === undefined ? null : (
         <SimpleDialog
-          delivery={selectedValue}
+          funcao={"delivery"}
+          dados={selectedValue}
           open={open}
           onClose={handleClose}
         />
       )}
 
-      {deliverys.map(delivery => (
+      {deliverys.map((delivery) => (
         <ENCOMENDAS>
           <IdEncomenda>
             <span>{delivery.id}</span>
           </IdEncomenda>
           <Destinatario>
-            <span>{delivery.recipient.name}</span>
+            <span>{delivery.recipient.name.toUpperCase()}</span>
           </Destinatario>
-          <Entregador>{delivery.deliveryman.name}</Entregador>
-          <Cidade>{delivery.recipient.cidade}</Cidade>
-          <Estado>{delivery.recipient.estado}</Estado>
+
+          <Entregador>
+            {delivery.deliveryman.avatarid != undefined ? (
+              <Avatar src={delivery.deliveryman.avatarid.url}></Avatar>
+            ) : (
+              <Avatar className={classes.purple}>
+                {delivery.deliveryman.name[0].toUpperCase()}{" "}
+                {delivery.deliveryman.name[1].toUpperCase()}
+              </Avatar>
+            )}
+            <p>{delivery.deliveryman.name.toUpperCase()}</p>
+          </Entregador>
+          <Cidade>{delivery.recipient.cidade.toUpperCase()}</Cidade>
+          <Estado>{delivery.recipient.estado.toUpperCase()}</Estado>
           <Status status={delivery.status}>
             <p>
               <p></p>
@@ -147,7 +181,7 @@ export default function Dashboard() {
                 <img src={caneta} alt="editar" /> Editar
               </p>
               <div></div>
-              <p>
+              <p onClick={() => handleDeleteItem(delivery.id)}>
                 <img src={lixeira} alt="Excluir" /> Excluir
               </p>
             </AcaoList>

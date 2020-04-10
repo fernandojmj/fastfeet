@@ -92,18 +92,35 @@ export function* getDeliverysByEncomenda({ payload }) {
   // }
 }
 
-export function* selectProdutos({ payload }) {
+export function* deleteDelivery({ payload }) {
   // try {
   console.tron.log("payload " + payload.data);
-  let produtos = payload.data;
-  let id = payload.id;
+  const id = payload.data;
+  console.tron.log("Deletar encomenda: " + id);
+  const responseDelete = yield call(api.delete, "delivery/delete/" + id);
+  console.tron.log("responseDelete: " + responseDelete.return);
+  if (responseDelete.data.return === true) {
+    toast.success("Encomenda " + id + " removida com sucesso!");
+  } else {
+    toast.error("Ocorreu um erro ao tentar remover a encomenda " + id);
+  }
 
-  // produtos = [...produtos, (produtos[id] : !produtos[id])];
+  const response = yield call(api.get, "delivery/showAll");
 
-  console.tron.log("Produtos");
-  console.tron.log(produtos);
+  response.data.map(delivery => {
+    if (delivery.endDate != null) {
+      // setStatus("green");
+      delivery["status"] = "ENTREGUE";
+    } else if (delivery.canceledAt != null) {
+      delivery["status"] = "CANCELADA";
+    } else if (delivery.startDate != null) {
+      delivery["status"] = "RETIRADA";
+    } else {
+      delivery["status"] = "PENDENTE";
+    }
+  });
 
-  yield put(selectProdutosSucess(produtos));
+  yield put(getDeliverySuccess(response.data));
 
   history.push("/dashboard");
 }
@@ -112,5 +129,5 @@ export default all([
   takeLatest("@delivery/SAVE_MEET_REQUEST", saveMeet),
   takeLatest("@delivery/GET_DELIVERY_REQUEST", getDeliverys),
   takeLatest("@delivery/GET_DELIVERY_FILTER_REQUEST", getDeliverysByEncomenda),
-  takeLatest("@delivery/GET_DELIVERY_SELECT_PRODUTOS_REQUEST", selectProdutos)
+  takeLatest("@delivery/GET_DELIVERY_DELETE_REQUEST", deleteDelivery)
 ]);

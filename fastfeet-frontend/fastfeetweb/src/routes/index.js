@@ -5,9 +5,13 @@ import SignIn from "../pages/SignIn";
 
 import Profile from "../pages/Profile";
 import Dashboard from "../pages/Dashboard";
-import NewMeet from "../pages/NewMeet";
-import Modal from "../components/SimpleDialog";
+import CadDeliveryMan from "../pages/CadDeliveryMan";
+import Modal from "../components/AvatarInput";
 import teste from "../pages/Dashboard/tempDialog";
+import deliveryMan from "../pages/DeliveryMan";
+import recipientes from "../pages/Recipients";
+import problems from "../pages/Problems";
+import EditDeliveryMan from "../pages/EditDeliveryMan";
 
 export default function Routes() {
   return (
@@ -16,9 +20,13 @@ export default function Routes() {
 
       <Route path="/dashboard" component={Dashboard} isPrivate />
       <Route path="/profile" component={Profile} isPrivate />
-      <Route path="/newMeet" component={NewMeet} isPrivate />
+      <Route path="/cadDeliveryman" component={CadDeliveryMan} isPrivate />
       <Route path="/modal" component={Modal} isPrivate />
       <Route path="/teste" component={teste} isPrivate />
+      <Route path="/deliveryman" component={deliveryMan} isPrivate />
+      <Route path="/recipients" component={recipientes} isPrivate />
+      <Route path="/problems" component={problems} isPrivate />
+      <Route path="/editDeliveryMan" component={EditDeliveryMan} isPrivate />
     </Switch>
   );
 }

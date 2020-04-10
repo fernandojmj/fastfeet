@@ -101,7 +101,7 @@ export const DivMenu = styled.div`
 `;
 
 export const LinkEncomendas = styled.a`
-  color: ${props => (props.linkEncomendas ? "black" : "#bebebe")};
+  color: ${(props) => (props.linkEncomendas ? "black" : "#bebebe")};
   margin: 20px;
   font-weight: bold;
   @media (max-width: 500px) {
@@ -110,8 +110,28 @@ export const LinkEncomendas = styled.a`
 `;
 export const LinkEntregadores = styled.a`
   /* color: #bebebe; */
-  color: ${props => (props.linkEntregadores ? "black" : "#bebebe")};
+  color: ${(props) => (props.linkEntregadores ? "black" : "#bebebe")};
   font-weight: bold;
+  margin: 20px;
+  @media (max-width: 500px) {
+    display: none;
+  }
+`;
+export const LinkDestinatarios = styled.a`
+  /* color: #bebebe; */
+  color: ${(props) => (props.linkDestinatarios ? "black" : "#bebebe")};
+  font-weight: bold;
+  margin: 20px;
+  @media (max-width: 500px) {
+    display: none;
+  }
+`;
+
+export const LinkProblemas = styled.a`
+  /* color: #bebebe; */
+  color: ${(props) => (props.linkProblemas ? "black" : "#bebebe")};
+  font-weight: bold;
+  margin: 20px;
   @media (max-width: 500px) {
     display: none;
   }

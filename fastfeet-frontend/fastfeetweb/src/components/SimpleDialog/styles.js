@@ -9,31 +9,42 @@ export const MODAL = styled.div`
     padding-left: 10px;
     padding-top: 50px;
     font-weight: bold;
-    font-size: 12px;
+    font-size: 13px;
   }
   p {
     padding-left: 10px;
+    font-size: 13px;
   }
   div {
-    margin-left: 10px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-
-    height: 1px;
-    width: 90%;
-    background-color: #d3d3d3;
-    opacity: 30%;
   }
 `;
 
-export const Menu = styled.button`
-  background: none;
-  border: 0;
-  color: #ffff;
-  left: -40x;
-  /* position: relative; */
-  strong {
-    font-size: 15px;
-    margin-left: 20px;
+export const LINHA = styled.div`
+  margin-left: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  height: 1px;
+  width: 90%;
+  background-color: #d3d3d3;
+  opacity: 30%;
+`;
+
+export const DATAS = styled.div`
+  display: flex;
+  span {
+    font-weight: bold;
   }
+`;
+export const LABEL = styled.label`
+  display: flex;
+
+  font-weight: bold;
+  padding-left: 10px;
+  font-size: 13px;
+`;
+export const DATA = styled.label`
+  /* display: flex; */
+  font-size: 13px;
+  padding-left: 5px;
 `;

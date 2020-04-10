@@ -2,7 +2,9 @@ import Deliveri from "../models/Deliverie";
 import moment from "moment-timezone";
 import Sequelize from "sequelize";
 import DeliveryProblems from "../models/DeliveryProblems";
-import Deliverie from "../models/Deliverie";
+import Recipients from "../models/Recipients";
+import DeliveryMan from "../models/DeliveryMan";
+import Files from "../models/File";
 
 class DeliveriController {
   async show(req, res) {
@@ -11,7 +13,30 @@ class DeliveriController {
   }
 
   async showAll(req, res) {
-    const rec = await Deliveri.findAll();
+    const rec = await Deliveri.findAll({
+      include: [
+        {
+          model: DeliveryMan,
+          as: "deliveryman",
+          include: [
+            {
+              model: Files,
+              as: "avatarid",
+            },
+          ],
+        },
+
+        {
+          model: Recipients,
+          as: "recipient",
+        },
+        // ,
+        // {
+        //   model: DeliveryProblems,
+        //   as: "deliveryProblems"
+        // }
+      ],
+    });
     return res.json(rec);
   }
 
@@ -25,7 +50,7 @@ class DeliveriController {
     const rec = await Deliveri.create({
       ...req.body,
       recipient_id: recipient,
-      deliveryman_id: DeliveryMan
+      deliveryman_id: DeliveryMan,
     });
 
     return res.json(rec);
@@ -34,8 +59,8 @@ class DeliveriController {
   async update(req, res) {
     Deliveri.update(req.body, {
       returning: false,
-      where: { id: req.params.id }
-    }).then(function(rowsUpdated) {
+      where: { id: req.params.id },
+    }).then(function (rowsUpdated) {
       return res.json(rowsUpdated);
     });
   }
@@ -43,9 +68,9 @@ class DeliveriController {
   async delete(req, res) {
     Deliveri.destroy({
       where: {
-        id: req.params.id
-      }
-    }).then(function(rowDeleted) {
+        id: req.params.id,
+      },
+    }).then(function (rowDeleted) {
       // rowDeleted will return number of rows deleted
       if (rowDeleted === 1) {
         return res.json({ return: true });
@@ -70,11 +95,11 @@ class DeliveriController {
         startDate: {
           [Op.between]: [
             moment().format("YYYY-MM-DD") + " " + "00:00:00",
-            moment().format("YYYY-MM-DD") + " " + "23:59:59"
-          ]
+            moment().format("YYYY-MM-DD") + " " + "23:59:59",
+          ],
         },
-        deliveryman_id: req.params.deliveryManId
-      }
+        deliveryman_id: req.params.deliveryManId,
+      },
     });
 
     // console.log(res.json(qtdRetiradaDia));
@@ -88,14 +113,14 @@ class DeliveriController {
         const dataAtual = await moment().format();
         console.log(dataAtual);
         const requestUpdate = {
-          startDate: dataAtual
+          startDate: dataAtual,
         };
 
         await Deliveri.update(requestUpdate, {
           returning: false,
-          where: { id: req.params.id }
-        }).then(function(rowsUpdated) {
-          rowsUpdated.map(item => {
+          where: { id: req.params.id },
+        }).then(function (rowsUpdated) {
+          rowsUpdated.map((item) => {
             if (item === 1) {
               returnWithdrawal = true;
             }
@@ -103,7 +128,7 @@ class DeliveriController {
         });
       } else {
         return res.json({
-          Withdrawal: "Horario não permitido para retirada"
+          Withdrawal: "Horario não permitido para retirada",
         });
       }
     } else {
@@ -111,12 +136,12 @@ class DeliveriController {
         Withdrawal:
           "Você possui " +
           qtdRetiradaDia.length +
-          " e não pode realizar mais retiradas hoje. "
+          " e não pode realizar mais retiradas hoje. ",
       });
     }
 
     return res.json({
-      Withdrawal: returnWithdrawal
+      Withdrawal: returnWithdrawal,
     });
   }
 
@@ -125,14 +150,14 @@ class DeliveriController {
     // moment.locale();
     const dataAtual = await moment().format();
     const requestUpdate = {
-      endDate: dataAtual
+      endDate: dataAtual,
     };
     let response = false;
     await Deliveri.update(requestUpdate, {
       returning: false,
-      where: { id: req.params.id }
-    }).then(function(rowsUpdated) {
-      rowsUpdated.map(item => {
+      where: { id: req.params.id },
+    }).then(function (rowsUpdated) {
+      rowsUpdated.map((item) => {
         if (item === 1) {
           response = true;
         }
@@ -145,21 +170,21 @@ class DeliveriController {
     const datafinalizing = req.body.endDate;
     const id = req.body.id;
     const requestUpdate = {
-      endDate: datafinalizing
+      endDate: datafinalizing,
     };
     let response = false;
     await Deliveri.update(requestUpdate, {
       returning: false,
-      where: { id: id }
-    }).then(function(rowsUpdated) {
-      rowsUpdated.map(item => {
+      where: { id: id },
+    }).then(function (rowsUpdated) {
+      rowsUpdated.map((item) => {
         if (item === 1) {
           response = true;
         }
       });
     });
     return res.json({
-      end: response
+      end: response,
     });
   }
 
@@ -175,11 +200,11 @@ class DeliveriController {
         startDate: {
           [Op.between]: [
             moment().format("YYYY-MM-DD") + " " + "00:00:00",
-            moment().format("YYYY-MM-DD") + " " + "23:59:59"
-          ]
+            moment().format("YYYY-MM-DD") + " " + "23:59:59",
+          ],
         },
-        deliveryman_id: req.body.deliveryManId
-      }
+        deliveryman_id: req.body.deliveryManId,
+      },
     });
 
     // console.log(res.json(qtdRetiradaDia));
@@ -187,14 +212,14 @@ class DeliveriController {
 
     if (qtdRetiradaDia.length < 5) {
       const requestUpdate = {
-        startDate: dataStart
+        startDate: dataStart,
       };
       let response = false;
       await Deliveri.update(requestUpdate, {
         returning: false,
-        where: { id: id }
-      }).then(function(rowsUpdated) {
-        rowsUpdated.map(item => {
+        where: { id: id },
+      }).then(function (rowsUpdated) {
+        rowsUpdated.map((item) => {
           if (item === 1) {
             response = true;
           }
@@ -202,12 +227,12 @@ class DeliveriController {
       });
     } else {
       return res.json({
-        response: `Você possui ${qtdRetiradaDia.length} retiradas e não pode realizar mais retiradas hoje`
+        response: `Você possui ${qtdRetiradaDia.length} retiradas e não pode realizar mais retiradas hoje`,
       });
     }
 
     return res.json({
-      response: response
+      response: response,
     });
   }
 
@@ -216,13 +241,13 @@ class DeliveriController {
     const response = await Deliveri.findAll({
       where: {
         endDate: {
-          [Op.is]: null
+          [Op.is]: null,
         },
         canceled_at: {
-          [Op.is]: null
+          [Op.is]: null,
         },
-        deliveryman_id: req.params.id
-      }
+        deliveryman_id: req.params.id,
+      },
     });
 
     return res.json({ response });
@@ -233,10 +258,10 @@ class DeliveriController {
     const response = await Deliveri.findAll({
       where: {
         endDate: {
-          [Op.not]: null
+          [Op.not]: null,
         },
-        deliveryman_id: req.params.id
-      }
+        deliveryman_id: req.params.id,
+      },
     });
 
     return res.json({ response });
@@ -244,18 +269,18 @@ class DeliveriController {
   //listar todas as entregas com algum problema
   async findDeliveryWithProblems(req, res) {
     const Op = Sequelize.Op;
-    const response = await Deliverie.findAll({
+    const response = await Deliveri.findAll({
       include: [
         {
           model: DeliveryProblems,
           as: "deliveryProblems",
           where: {
             delivery_id: {
-              [Op.not]: null
-            }
-          }
-        }
-      ]
+              [Op.not]: null,
+            },
+          },
+        },
+      ],
     });
 
     return res.json({ response });
@@ -266,18 +291,39 @@ class DeliveriController {
     const filter = req.query.filter;
     let response = [];
     if (filter !== undefined) {
-      response = await Deliverie.findAll({
+      response = await Deliveri.findAll({
+        include: [
+          {
+            model: DeliveryMan,
+            as: "deliveryman",
+            include: [
+              {
+                model: Files,
+                as: "avatarid",
+              },
+            ],
+          },
+          {
+            model: Recipients,
+            as: "recipient",
+          },
+          // ,
+          // {
+          //   model: DeliveryProblems,
+          //   as: "deliveryProblems"
+          // }
+        ],
         where: {
           product: {
-            [Op.like]: `%${filter}%`
-          }
-        }
+            [Op.like]: `%${filter}%`,
+          },
+        },
       });
     } else {
-      response = await Deliverie.findAll();
+      response = await Deliveri.findAll();
     }
 
-    return res.json({ response });
+    return res.json(response);
   }
 }
 

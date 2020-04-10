@@ -15,21 +15,21 @@ import Dialog from "@material-ui/core/Dialog";
 // import { blue } from "@material-ui/core/colors";
 import { format } from "date-fns";
 import pt from "date-fns/locale/pt";
-import { MODAL } from "./styles";
+import { MODAL, DATAS, DATA, LINHA, LABEL } from "./styles";
 import { date } from "yup";
 
 // const emails = ["username@gmail.com", "user02@gmail.com"];
 
 export default function SimpleDialog(props) {
   // const classes = useStyles();
-  const { onClose, selectedValue, open, delivery } = props;
-  console.tron.log(delivery);
+  const { onClose, selectedValue, open, dados, funcao } = props;
+  console.tron.log(dados);
 
   const handleClose = () => {
     onClose(selectedValue);
   };
 
-  const handleListItemClick = value => {
+  const handleListItemClick = (value) => {
     onClose(value);
   };
 
@@ -43,21 +43,35 @@ export default function SimpleDialog(props) {
 
   return (
     <Dialog onClose={handleClose} aria-labelledby="Encomenda" open={open}>
-      <MODAL>
-        <span>Informações da emcomenda</span>
-        <p>
-          {delivery.recipient.rua}, {delivery.recipient.numero}
-        </p>
-        <p>
-          {delivery.recipient.cidade} - {delivery.recipient.estado}
-        </p>
-        <p>{delivery.recipient.cep}</p>
-        <div></div>
-        <span>Datas</span>
-        <p>Retirada - {formatarDate(delivery.startDate)}</p>
-        <p>Entrega - {formatarDate(delivery.endDate)}</p>
-        <div></div>
-      </MODAL>
+      {funcao == "delivery" ? (
+        <MODAL>
+          <span>Informações da emcomenda</span>
+          <p>
+            {dados.recipient.rua}, {dados.recipient.numero}
+          </p>
+          <p>
+            {dados.recipient.cidade} - {dados.recipient.estado}
+          </p>
+          <p>{dados.recipient.cep}</p>
+          <LINHA></LINHA>
+          <span>Datas</span>
+          <DATAS>
+            <LABEL>Retirada: </LABEL>
+            <DATA>{formatarDate(dados.startDate)}</DATA>
+          </DATAS>
+          <DATAS>
+            <LABEL>Entrega: </LABEL>
+            <DATA>{formatarDate(dados.endDate)}</DATA>
+          </DATAS>
+          <LINHA></LINHA>
+          <span>Assinatura do destinatário</span>
+        </MODAL>
+      ) : (
+        <MODAL>
+          <span>VISUALIZAR PROBLEMA</span>
+          <p>{dados.description}</p>
+        </MODAL>
+      )}
     </Dialog>
   );
 }
@@ -65,5 +79,5 @@ export default function SimpleDialog(props) {
 SimpleDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
-  selectedValue: PropTypes.string.isRequired
+  selectedValue: PropTypes.string.isRequired,
 };

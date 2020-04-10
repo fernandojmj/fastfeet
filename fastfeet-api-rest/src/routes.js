@@ -1,4 +1,6 @@
 import express from "express";
+import multer from "multer";
+import multerConfig from "./config/multer";
 import UserController from "./app/controllers/UserController";
 import authMiddlaware from "./app/middlewares/auth";
 import RecipientsController from "./app/controllers/RecipientsController";
@@ -6,11 +8,20 @@ import SessionController from "./app/controllers/SessionController";
 import DeliveryManController from "./app/controllers/DeliveryManController ";
 import DeliveriController from "./app/controllers/DeliveriController";
 import DeliveryProblemsController from "./app/controllers/DeliveryProblemsController";
+import FileController from "./app/controllers/FileController";
 
 const routes = express.Router();
 
+const upload = multer(multerConfig);
+
 routes.post("/users", UserController.store);
 routes.post("/sessions", SessionController.store);
+routes.post(
+  "/files",
+  authMiddlaware,
+  upload.single("file"),
+  FileController.store
+);
 
 // Recipients
 routes.get(
@@ -116,6 +127,7 @@ routes.get(
   authMiddlaware,
   DeliveriController.findDeliveryWithProblems
 );
+routes.get("/problems", authMiddlaware, DeliveryProblemsController.showAll);
 //distribuidora cancelar uma entrega baseado no ID do problema.
 routes.delete(
   "/problem/:id/cancel-delivery",

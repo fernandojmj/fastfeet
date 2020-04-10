@@ -8,7 +8,9 @@ import {
   Profile,
   DivMenu,
   LinkEncomendas,
-  LinkEntregadores
+  LinkEntregadores,
+  LinkDestinatarios,
+  LinkProblemas,
 } from "./styles";
 import history from "~/services/history";
 
@@ -19,9 +21,11 @@ import { Link } from "react-router-dom";
 import logo from "~/assets/fastfeet-logo.png";
 
 export default function Header() {
-  let profile = useSelector(state => state.user.profile);
+  let profile = useSelector((state) => state.user.profile);
   const [linkEncomendas, setLinkEncomendas] = useState(true);
   const [linkEntregadores, setLinkEntregadores] = useState(false);
+  const [linkDestinatarios, setlinkDestinatarios] = useState(false);
+  const [linkProblemas, setlinkProblemas] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -32,13 +36,37 @@ export default function Header() {
   function selecionarEncomendas() {
     setLinkEncomendas(true);
     setLinkEntregadores(false);
+    setlinkDestinatarios(false);
+    setlinkProblemas(false);
+
     history.push("/dashboard");
   }
 
   function selecionarEntregadores() {
     setLinkEncomendas(false);
     setLinkEntregadores(true);
-    history.push("/newmeet");
+    setlinkDestinatarios(false);
+    setlinkProblemas(false);
+
+    history.push("/deliveryman");
+  }
+
+  function selecionarDestinatarios() {
+    setLinkEncomendas(false);
+    setLinkEntregadores(false);
+    setlinkDestinatarios(true);
+    setlinkProblemas(false);
+
+    history.push("/recipients");
+  }
+
+  function selecionarProblemas() {
+    setLinkEncomendas(false);
+    setLinkEntregadores(false);
+    setlinkDestinatarios(false);
+    setlinkProblemas(true);
+
+    history.push("/problems");
   }
 
   return (
@@ -61,6 +89,19 @@ export default function Header() {
           >
             ENTREGADORES
           </LinkEntregadores>
+          <LinkDestinatarios
+            linkDestinatarios={linkDestinatarios}
+            onClick={selecionarDestinatarios}
+          >
+            DESTINATÁRIOS
+          </LinkDestinatarios>
+
+          <LinkProblemas
+            linkProblemas={linkProblemas}
+            onClick={selecionarProblemas}
+          >
+            PROBLEMAS
+          </LinkProblemas>
         </nav>
         <aside>
           <Profile>

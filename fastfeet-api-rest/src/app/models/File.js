@@ -1,12 +1,17 @@
 import Sequelize, { Model } from "sequelize";
 
-class DeliveryMan extends Model {
+class File extends Model {
   static init(sequelize) {
     super.init(
       {
         name: Sequelize.STRING,
-        email: Sequelize.STRING,
-        avatarId: Sequelize.STRING,
+        path: Sequelize.STRING,
+        url: {
+          type: Sequelize.VIRTUAL,
+          get() {
+            return `${process.env.APP_URL}/files/${this.path}`;
+          },
+        },
       },
       {
         sequelize,
@@ -17,12 +22,5 @@ class DeliveryMan extends Model {
     );
     return this;
   }
-
-  static associate(models) {
-    this.belongsTo(models.File, {
-      foreignKey: "avatarId",
-      as: "avatarid",
-    });
-  }
 }
-export default DeliveryMan;
+export default File;

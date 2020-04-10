@@ -113,7 +113,7 @@ export const HEADERTABLE = styled.div`
   } */
 `;
 
-export const ENCOMENDAS = styled.div`
+export const LISTA = styled.div`
   max-width: 80%;
   margin-left: 9%;
   /* margin: 50px auto; */
@@ -129,7 +129,7 @@ export const ENCOMENDAS = styled.div`
   border-radius: 5%;
   width: 100%;
   padding-top: 15px;
-  padding-bottom: 10px;
+  padding-bottom: 15px;
   height: 30%;
   span {
     /* font-weight: bold; */
@@ -148,7 +148,7 @@ export const ENCOMENDAS = styled.div`
 `;
 
 export const IdEncomenda = styled.div`
-  width: 5%;
+  width: 20%;
   span {
     font-weight: bold;
   }
@@ -157,134 +157,56 @@ export const IdEncomenda = styled.div`
   }
 `;
 
-export const Destinatario = styled.div`
+export const FOTO = styled.div`
   /* margin-left: 9%;
   max-width: 200px; */
+  margin-bottom: 10px;
+
   width: 20%;
   @media (max-width: 500px) {
-    width: 40%;
-    p {
-      /* padding-left: 1px; */
-      padding-right: 1px;
-
-      display: flex;
-      width: 100%;
-    }
+    width: 20%;
   }
 `;
 
-export const Entregador = styled.div`
+export const FOTOAVATAR = styled.div`
+  padding-left: 10px;
+  width: 20%;
+  @media (max-width: 500px) {
+    width: 20%;
+  }
+`;
+
+export const DESCRICAO = styled.div`
   /* margin-left: 10%; */
-  max-width: 30%;
-  width: 25%;
-  display: flex;
+  max-width: 60%;
+  width: 60%;
+  /* padding-top: 10px; */
   p {
-    margin-left: 5px;
-    margin-top: 4%;
-  }
-
-  @media (max-width: 500px) {
-    width: 40%;
-    p {
-      /* padding-left: 1px; */
-      padding-right: 1px;
-
-      display: flex;
-      width: 100%;
-    }
-  }
-`;
-
-export const Cidade = styled.div`
-  max-width: 200px;
-  width: 10%;
-  @media (max-width: 500px) {
-    display: none;
-  }
-`;
-
-export const Estado = styled.div`
-  max-width: 200px;
-  width: 14%;
-  @media (max-width: 800px) {
-    display: none;
-  }
-`;
-
-export const Status = styled.div`
-  width: 20%;
-  align-items: center;
-  padding-right: 1px;
-  p {
-    /* padding-left: 1px; */
-    padding-right: 1px;
-
-    display: flex;
-    width: 38%;
-    font-weight: bold;
-    border-radius: 35%;
-    align-items: center;
-    padding-bottom: 2px;
-    padding-top: 2px;
-    padding-left: 4px;
-    padding-right: 4px;
-
-    font-size: 10px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    /* height: 50px; */
-
-    background-color: ${(props) =>
-      props.status === "RETIRADA" ? "#C6E2FF" : ""};
-    background-color: ${(props) =>
-      props.status === "CANCELADA" ? "#FFAEB9" : ""};
-    background-color: ${(props) =>
-      props.status === "PENDENTE" ? "#F0FFF0" : ""};
-    background-color: ${(props) =>
-      props.status === "ENTREGUE" ? "#C1FFC1" : ""};
-
-    color: ${(props) => (props.status === "RETIRADA" ? "#0000CD" : "")};
-    color: ${(props) => (props.status === "CANCELADA" ? "#CD0000" : "")};
-    color: ${(props) => (props.status === "PENDENTE" ? "#CDCD00" : "")};
-    color: ${(props) => (props.status === "ENTREGUE" ? "#228B22" : "")};
-    p {
-      width: 5px;
-      margin-right: 5px;
-      height: 8px;
-      border-radius: 50%;
-      margin-left: 1px;
-      background-color: ${(props) =>
-        props.status === "RETIRADA" ? "#0000CD" : ""};
-      background-color: ${(props) =>
-        props.status === "CANCELADA" ? "#CD0000" : ""};
-      background-color: ${(props) =>
-        props.status === "PENDENTE" ? "#CDCD00" : ""};
-      background-color: ${(props) =>
-        props.status === "ENTREGUE" ? "#228B22" : ""};
-    }
+    max-width: 250ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   @media (max-width: 500px) {
     width: 25%;
+    margin-left: 10px;
     p {
       /* padding-left: 1px; */
       padding-right: 1px;
-
+      padding-left: 10px;
+      margin-left: 10px;
       display: flex;
-      width: 100%;
-    }
-  }
-  @media (max-width: 800px) {
-    width: 25%;
-    p {
-      /* pad ding-left: 1px; */
-      padding-right: 1px;
+      width: 25%;
 
-      display: flex;
-      /* width: 50%; */
+      max-width: 13ch;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 `;
+
 export const Acao = styled.div`
   /* max-width: 200px; */
   /* width: 10%; */
@@ -298,11 +220,24 @@ export const Acao = styled.div`
     margin-left: 2px;
     border-radius: 50%;
   }
+  div {
+    display: none;
+  }
 
   @media (max-width: 500px) {
-    display: none;
+    display: flex;
+    align-items: center;
+
     p {
-      display: none;
+      background-color: #ad3;
+      width: 5px;
+      height: 5px;
+      margin-top: 10px;
+      border-radius: 50%;
+      box-sizing: 10px;
+    }
+    div {
+      display: block;
     }
   }
 `;
@@ -310,12 +245,16 @@ export const Acao = styled.div`
 export const Acoes = styled.div`
   flex-direction: column;
   align-items: center;
-  padding-left: 10px;
+  padding-left: 200px;
+  @media (max-width: 500px) {
+    padding-left: 100px;
+    width: 10%;
+  }
 `;
 export const AcaoList = styled.div`
   font-size: 12px;
   color: black;
-  display: ${(props) => (props.produto ? "block" : "none")};
+  display: ${(props) => (props.linha ? "block" : "none")};
   background-color: white;
   margin-top: 5px;
   padding-right: 30px;
@@ -324,7 +263,5 @@ export const AcaoList = styled.div`
   img {
     height: 20px;
     margin-top: 2px;
-  }
-  p {
   }
 `;

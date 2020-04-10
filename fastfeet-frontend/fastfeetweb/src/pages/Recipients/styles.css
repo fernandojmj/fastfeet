@@ -1,0 +1,10 @@
+.customeTheme {
+  color: #f8f8ff !important;
+  background-color: white !important;
+  width: 150px;
+}
+.customeTheme.place-top:after {
+  border-top-color: #f8f8ff !important;
+  border-top-style: solid !important;
+  border-top-width: 6px !important;
+}

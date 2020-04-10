@@ -7,13 +7,15 @@ import modelRecipients from "../app/models/Recipients";
 import modelDeliveryMan from "../app/models/DeliveryMan";
 import modelDeliveri from "../app/models/Deliverie";
 import modelDeliveryProblems from "../app/models/DeliveryProblems";
+import modelFiles from "../app/models/File";
 
 const models = [
   modelUser,
   modelRecipients,
   modelDeliveryMan,
   modelDeliveri,
-  modelDeliveryProblems
+  modelDeliveryProblems,
+  modelFiles,
 ];
 
 class Database {
@@ -24,8 +26,10 @@ class Database {
   init() {
     this.connection = new Sequelize(databaseConfig);
     models
-      .map(model => model.init(this.connection))
-      .map(model => model.associate && model.associate(this.connection.models));
+      .map((model) => model.init(this.connection))
+      .map(
+        (model) => model.associate && model.associate(this.connection.models)
+      );
   }
 }
 

@@ -1,12 +1,20 @@
 import storage from "redux-persist/lib/storage";
 import { persistReducer } from "redux-persist";
 
-export default reducers => {
+export default (reducers) => {
   const persistedReducer = persistReducer(
     {
-      key: "meetWeb",
+      key: "fastfeet",
       storage,
-      whitelist: ["auth", "user", "meet"]
+      whitelist: [
+        "auth",
+        "user",
+        "meet",
+        "delivery",
+        "deliveryMan",
+        "recipients",
+        "problems",
+      ],
     },
     reducers
   );

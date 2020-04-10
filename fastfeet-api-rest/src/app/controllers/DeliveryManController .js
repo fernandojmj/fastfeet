@@ -1,5 +1,6 @@
 import DeliveryMan from "../models/DeliveryMan";
 import Sequelize from "sequelize";
+import ModelFile from "../models/File";
 
 class DeliveryManController {
   async show(req, res) {
@@ -8,13 +9,20 @@ class DeliveryManController {
   }
 
   async showAll(req, res) {
-    const rec = await DeliveryMan.findAll();
+    const rec = await DeliveryMan.findAll({
+      include: [
+        {
+          model: ModelFile,
+          as: "avatarid",
+        },
+      ],
+    });
     return res.json(rec);
   }
 
   async create(req, res) {
     const rec = await DeliveryMan.create({
-      ...req.body
+      ...req.body,
     });
 
     return res.json(rec);
@@ -23,18 +31,22 @@ class DeliveryManController {
   async update(req, res) {
     DeliveryMan.update(req.body, {
       returning: false,
-      where: { id: req.params.id }
-    }).then(function(rowsUpdated) {
-      return res.json(rowsUpdated);
+      where: { id: req.params.id },
+    }).then(function (rowsUpdated) {
+      if (rowsUpdated > 0) {
+        return res.json(true);
+      } else {
+        return res.json(false);
+      }
     });
   }
 
   async delete(req, res) {
     DeliveryMan.destroy({
       where: {
-        id: req.params.id
-      }
-    }).then(function(rowDeleted) {
+        id: req.params.id,
+      },
+    }).then(function (rowDeleted) {
       // rowDeleted will return number of rows deleted
       if (rowDeleted === 1) {
         return res.json({ return: true });
@@ -52,11 +64,17 @@ class DeliveryManController {
     let response = [];
     if (filter !== undefined) {
       response = await DeliveryMan.findAll({
+        include: [
+          {
+            model: ModelFile,
+            as: "avatarid",
+          },
+        ],
         where: {
           name: {
-            [Op.like]: `%${filter}%`
-          }
-        }
+            [Op.like]: `%${filter}%`,
+          },
+        },
       });
     } else {
       response = await DeliveryMan.findAll();

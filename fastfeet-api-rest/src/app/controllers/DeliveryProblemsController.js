@@ -31,6 +31,14 @@ class DeliveryProblemsController {
 
     return res.json({ response });
   }
+
+  async showAll(req, res) {
+    const Op = Sequelize.Op;
+
+    const response = await DeliveyProblems.findAll();
+
+    return res.json({ response });
+  }
   //distribuidora cancelar uma entrega baseado no ID do problema.
   async cancelDeliveryByproblems(req, res) {
     const Op = Sequelize.Op;
@@ -63,6 +71,8 @@ class DeliveryProblemsController {
       rowsUpdated.map(item => {
         if (item === 1) {
           response = true;
+        } else {
+          response = false;
         }
       });
     });
