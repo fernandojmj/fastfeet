@@ -23,7 +23,7 @@ export const Header = styled.div`
     font-size: 20px;
     /* font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif; */
     color: black;
-    width: 70%;
+    width: 60%;
     /* padding-left: 10%; */
     font-weight: bold;
   }
@@ -37,45 +37,6 @@ export const Header = styled.div`
       color: black;
       padding-left: 10%;
       font-weight: bold;
-    }
-  }
-`;
-
-export const BUTTONS = styled.div`
-  max-width: 100%;
-  /* background-color:#ba55d3 */
-
-  display: flex;
-
-  width: 45%;
-
-  a {
-    margin-left: 2%;
-  }
-
-  button {
-    height: 30px;
-    width: 100px;
-
-    margin-left: 2%;
-    background-color: #9400d3;
-    color: #ffff;
-    border: 0;
-    border-radius: 5px;
-    font-weight: bold;
-
-    &:hover {
-      background: #ba55d3;
-    }
-  }
-  @media (max-width: 850px) {
-    flex-direction: column;
-    align-items: center;
-    width: 80%;
-    button {
-      margin-top: 15px;
-
-      /* width: 80%; */
     }
   }
 `;
@@ -96,6 +57,7 @@ export const IMPUT = styled.div`
     height: 40px;
     margin-bottom: 10px;
     margin-top: 5px;
+    padding-left: 10px;
   }
   label {
     width: 95%;

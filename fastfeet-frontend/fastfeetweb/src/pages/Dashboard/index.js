@@ -8,9 +8,11 @@ import {
   getDeliveryByEncomendaRequest,
   selectProdutos,
   DeleteDeliveryRequest,
+  selectDelivery,
 } from "~/store/modules/delivery/actions";
+import history from "~/services/history";
 
-import "./styles.css";
+// import "./styles.css";
 
 import caneta from "~/assets/caneta_edit.png";
 import lixeira from "~/assets/lixeira_excluir.png";
@@ -66,10 +68,14 @@ export default function Dashboard() {
     }
   }
 
+  async function handleEditItem(delivery) {
+    dispatch(selectDelivery(delivery));
+    history.push("/EditDelivery");
+  }
+
   useEffect(() => {
-    let response;
     async function getMeetUps() {
-      response = dispatch(getDeliveryRequest());
+      dispatch(getDeliveryRequest());
     }
     getMeetUps();
   }, []);
@@ -109,7 +115,7 @@ export default function Dashboard() {
           placeholder="Buscar por Encomendas"
           onChange={(e) => seachByEncomenda(e)}
         ></InputSearch>
-        <a href="/newMeet">
+        <a href="/cadDelivery">
           <button> CADASTRAR</button>
         </a>
       </INPUTS>
@@ -177,7 +183,7 @@ export default function Dashboard() {
                 <img src={visualizar} alt="Visualizar" /> Visualizar
               </p>
               <div></div>
-              <p>
+              <p onClick={() => handleEditItem(delivery)}>
                 <img src={caneta} alt="editar" /> Editar
               </p>
               <div></div>

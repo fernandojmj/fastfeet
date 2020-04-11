@@ -10,11 +10,7 @@ export default function delivery(state = INITTIAL_STATE, action) {
   switch (action.type) {
     case "@delivery/UPDATE_DELIVERY_SUCCESS":
       return produce(state, (draft) => {
-        draft.delivery = action.payload.delivery;
-      });
-    case "@delivery/UPDATE_DELIVERY_SUCCESS":
-      return produce(state, (draft) => {
-        draft.delivery = action.payload.delivery;
+        draft.delivery = action.payload.data;
       });
 
     case "@delivery/GET_DELIVERY_SUCCESS":

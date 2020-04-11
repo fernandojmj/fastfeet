@@ -61,7 +61,11 @@ class DeliveriController {
       returning: false,
       where: { id: req.params.id },
     }).then(function (rowsUpdated) {
-      return res.json(rowsUpdated);
+      if (rowsUpdated > 0) {
+        return res.json(true);
+      } else {
+        return res.json(false);
+      }
     });
   }
 

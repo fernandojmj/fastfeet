@@ -1,22 +1,25 @@
 import { takeLatest, all, call, put } from "redux-saga/effects";
-import { getDeliverySuccess, selectProdutosSucess } from "./actions";
+import {
+  getDeliverySuccess,
+  selectProdutosSucess,
+  saveDeliveryRequest,
+} from "./actions";
 import { toast } from "react-toastify";
 import api from "~/services/api";
 import history from "~/services/history";
 
-export function* saveMeet({ payload }) {
+export function* saveDelivery({ payload }) {
   try {
-    const { nome, local, dataMeet, descricao } = payload.data;
+    const { recipient_id, deliveryman_id, product } = payload.data;
 
-    const meet = Object.assign({ nome, local, descricao, dataMeet });
-    console.tron.log("Meet");
-    console.tron.log(meet);
-    const response = yield call(api.post, "evento", meet);
+    const delivery = Object.assign({ recipient_id, deliveryman_id, product });
+    console.tron.log("delivery");
+    console.tron.log(delivery);
+    const response = yield call(api.post, "deliveries/create", delivery);
     console.tron.log("response");
     console.tron.log(response);
     toast.success("Evento salvo com sucesso!");
 
-    // yield put(saveMeetSuccess(response.data));
     history.push("/dashboard");
   } catch (error) {
     console.tron.log(error);
@@ -31,7 +34,7 @@ export function* getDeliverys() {
     const response = yield call(api.get, "delivery/showAll");
     // console.tron.log("buscou encomendas");
 
-    response.data.map(delivery => {
+    response.data.map((delivery) => {
       if (delivery.endDate != null) {
         // setStatus("green");
         delivery["status"] = "ENTREGUE";
@@ -67,7 +70,7 @@ export function* getDeliverysByEncomenda({ payload }) {
   console.tron.log("buscou encomendas por: " + filter);
   const response = yield call(api.get, "/delivery/product?filter=" + filter);
 
-  response.data.map(delivery => {
+  response.data.map((delivery) => {
     if (delivery.endDate != null) {
       // setStatus("green");
       delivery["status"] = "ENTREGUE";
@@ -107,7 +110,7 @@ export function* deleteDelivery({ payload }) {
 
   const response = yield call(api.get, "delivery/showAll");
 
-  response.data.map(delivery => {
+  response.data.map((delivery) => {
     if (delivery.endDate != null) {
       // setStatus("green");
       delivery["status"] = "ENTREGUE";
@@ -125,9 +128,33 @@ export function* deleteDelivery({ payload }) {
   history.push("/dashboard");
 }
 
+export function* updateDelivery({ payload }) {
+  // try {
+  console.tron.log("payload " + payload.data);
+
+  const { id, recipient_id, deliveryman_id, product } = payload.data;
+
+  const delivery = Object.assign({ id, recipient_id, deliveryman_id, product });
+  console.tron.log("delivery");
+  console.tron.log(delivery);
+  const responseEdit = yield call(
+    api.put,
+    "/delivery/edit/" + delivery.id,
+    delivery
+  );
+  console.tron.log("response: " + responseEdit);
+  if (responseEdit) {
+    toast.success("Atualização realizada com sucesso!");
+    history.push("/dashboard");
+  } else {
+    toast.error("Ocorreu um erro ao tentar atualização! ");
+  }
+}
+
 export default all([
-  takeLatest("@delivery/SAVE_MEET_REQUEST", saveMeet),
+  takeLatest("@delivery/SAVE_DELIVERY_REQUEST", saveDelivery),
+  takeLatest("@delivery/UPDATE_DELIVERY_REQUEST", updateDelivery),
   takeLatest("@delivery/GET_DELIVERY_REQUEST", getDeliverys),
   takeLatest("@delivery/GET_DELIVERY_FILTER_REQUEST", getDeliverysByEncomenda),
-  takeLatest("@delivery/GET_DELIVERY_DELETE_REQUEST", deleteDelivery)
+  takeLatest("@delivery/GET_DELIVERY_DELETE_REQUEST", deleteDelivery),
 ]);

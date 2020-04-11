@@ -1,18 +1,15 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { takeLatest, all, call, put } from "redux-saga/effects";
-import Avatar from "@material-ui/core/Avatar";
-import { makeStyles } from "@material-ui/core/styles";
-import { deepOrange, deepPurple } from "@material-ui/core/colors";
+
 import {
   getRecipientsRequest,
   getRecipientsByNameRequest,
-  DeleteRecipientsnRequest,
   selectProdutos,
   DeleteRecipientsRequest,
-} from "~/store/modules/recipients/actions";
-
-import "./styles.css";
+  selectRecipients,
+} from "~/store/modules/recipient/actions";
+import history from "~/services/history";
 
 import caneta from "~/assets/caneta_edit.png";
 import lixeira from "~/assets/lixeira_excluir.png";
@@ -25,22 +22,17 @@ import {
   INPUTS,
   InputSearch,
   IdEncomenda,
-  FOTO,
-  FOTOAVATAR,
   NOME,
   Acao,
   AcaoList,
   Acoes,
   ENDERECO,
 } from "~/pages/Recipients/styles";
-import { de } from "date-fns/locale";
-
-// import { Container } from './styles';
 
 export default function Recipients() {
   const dispatch = useDispatch();
-  let Recipients = useSelector((state) => state.recipients.recipients);
-  let linhas = useSelector((state) => state.recipients.linhas);
+  let Recipients = useSelector((state) => state.recipient.recipients);
+  let linhas = useSelector((state) => state.recipient.linhas);
   console.tron.log("Recipients State: ");
   console.tron.log(Recipients);
   async function handleItem(id) {
@@ -50,10 +42,18 @@ export default function Recipients() {
 
   async function handleDeleteItem(id) {
     if (
-      window.confirm("Tem certeza que deseja excluir Recipients: " + id + " ?")
+      window.confirm(
+        "Tem certeza que deseja excluir Destinatário: " + id + " ?"
+      )
     ) {
       dispatch(DeleteRecipientsRequest(id));
     }
+  }
+
+  async function handleEditItem(recipient) {
+    console.tron.log(recipient);
+    dispatch(selectRecipients(recipient));
+    history.push("/EditRecipients");
   }
 
   useEffect(() => {
@@ -80,7 +80,7 @@ export default function Recipients() {
           placeholder="Buscar por Destinatários"
           onChange={(e) => seachByRecipients(e)}
         ></InputSearch>
-        <a href="/newMeet">
+        <a href="/cadRecipients">
           <button> CADASTRAR</button>
         </a>
       </INPUTS>
@@ -114,7 +114,7 @@ export default function Recipients() {
               <div>...</div>
             </Acao>
             <AcaoList linha={linhas[item.id]}>
-              <p>
+              <p onClick={() => handleEditItem(item)}>
                 <img src={caneta} alt="editar" /> Editar
               </p>
               <div></div>

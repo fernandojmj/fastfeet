@@ -71,3 +71,10 @@ export function DeleteDeliveryRequest(data) {
     payload: { data },
   };
 }
+
+export function selectDelivery(data) {
+  return {
+    type: "@delivery/UPDATE_DELIVERY_SUCCESS",
+    payload: { data },
+  };
+}

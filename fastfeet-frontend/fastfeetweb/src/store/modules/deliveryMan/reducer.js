@@ -4,6 +4,7 @@ const INITTIAL_STATE = {
   deliverysMan: [],
   deliveryMan,
   linhas: [],
+  deliveryManOptions: [],
 };
 
 export default function deliveryMan(state = INITTIAL_STATE, action) {
@@ -30,6 +31,11 @@ export default function deliveryMan(state = INITTIAL_STATE, action) {
     case "@delivery/SELECT_LINHA_SUCCESS":
       return produce(state, (draft) => {
         draft.linhas[action.payload.id] = !draft.linhas[action.payload.id];
+      });
+
+    case "@delivery/GET_DELIVERY_MAN_OPTIONS_SUCCESS":
+      return produce(state, (draft) => {
+        draft.deliveryManOptions = action.payload.data;
       });
 
     default:

@@ -2,19 +2,21 @@ import produce from "immer";
 
 const INITTIAL_STATE = {
   recipients: [],
+  recipient,
   linhas: [],
-  recipent: null,
+  recipientOptions: [],
 };
 
-export default function recipents(state = INITTIAL_STATE, action) {
+export default function recipient(state = INITTIAL_STATE, action) {
   switch (action.type) {
     case "@recipients/UPDATE_RECIPIENTS_SUCCESS":
+      console.tron.log(action.payload.data);
       return produce(state, (draft) => {
-        draft.recipent = action.payload.data;
+        draft.recipient = action.payload.data;
       });
-    case "@recipients/UPDATE_RECIPIENTS_SUCCESS":
+    case "@recipients/SAVE_RECIPIENTS_SUCCESS":
       return produce(state, (draft) => {
-        draft.recipent = action.payload.data;
+        draft.recipient = action.payload.data;
       });
 
     case "@recipients/GET_RECIPIENTS_SUCCESS":
@@ -29,6 +31,13 @@ export default function recipents(state = INITTIAL_STATE, action) {
     case "@recipients/SELECT_LINHA_SUCCESS":
       return produce(state, (draft) => {
         draft.linhas[action.payload.id] = !draft.linhas[action.payload.id];
+      });
+
+    case "@recipients/GET_RECIPIENTS_OPTIONS_SUCCESS":
+      console.tron.log("Entrou reducer options success");
+      console.tron.log(action.payload.data);
+      return produce(state, (draft) => {
+        draft.recipientOptions = action.payload.data;
       });
 
     default:

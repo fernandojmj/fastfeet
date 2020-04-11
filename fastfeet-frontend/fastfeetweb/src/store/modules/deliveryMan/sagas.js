@@ -1,5 +1,9 @@
 import { takeLatest, all, call, put } from "redux-saga/effects";
-import { getDeliveryManSuccess, saveDeliveryManSuccess } from "./actions";
+import {
+  getDeliveryManSuccess,
+  saveDeliveryManSuccess,
+  getDeliveryManOptionsSuccess,
+} from "./actions";
 import { toast } from "react-toastify";
 import api from "~/services/api";
 import history from "~/services/history";
@@ -109,6 +113,25 @@ export function* updateDeliveryMan({ payload }) {
   }
 }
 
+export function* getDeliveryManOptions() {
+  const response = yield call(api.get, "deliveryMan/showAll");
+  console.tron.log("buscou Opcoes deliveryMan SAGA");
+
+  let options = [];
+  response.data.map((r) => {
+    let option = {
+      value: r.id,
+      label: r.name,
+    };
+
+    options.push(option);
+  });
+
+  console.tron.log(options);
+
+  yield put(getDeliveryManOptionsSuccess(options));
+}
+
 export default all([
   takeLatest("@delivery/GET_DELIVERY_MAN_REQUEST", getDeliverysMans),
   takeLatest(
@@ -118,4 +141,8 @@ export default all([
   takeLatest("@delivery/GET_DELIVERY_MAN_DELETE_REQUEST", deleteDeliveryMan),
   takeLatest("@delivery/SAVE_DELIVERY_MAN_REQUEST", saveDeliveryMan),
   takeLatest("@delivery/UPDATE_DELIVERY_MAN_REQUEST", updateDeliveryMan),
+  takeLatest(
+    "@delivery/GET_DELIVERY_MAN_OPTIONS_REQUEST",
+    getDeliveryManOptions
+  ),
 ]);

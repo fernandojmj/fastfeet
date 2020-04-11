@@ -15,7 +15,7 @@ class RecipientsController {
   async create(req, res) {
     console.log(req.name);
     const rec = await Recipients.create({
-      ...req.body
+      ...req.body,
     });
 
     return res.json(rec);
@@ -26,18 +26,22 @@ class RecipientsController {
     console.log(req.params.id);
     Recipients.update(req.body, {
       returning: false,
-      where: { id: req.params.id }
-    }).then(function(rowsUpdated) {
-      return res.json(rowsUpdated);
+      where: { id: req.params.id },
+    }).then(function (rowsUpdated) {
+      if (rowsUpdated === 1) {
+        return res.json(true);
+      } else {
+        return res.json(false);
+      }
     });
   }
 
   async delete(req, res) {
     Recipients.destroy({
       where: {
-        id: req.params.id
-      }
-    }).then(function(rowDeleted) {
+        id: req.params.id,
+      },
+    }).then(function (rowDeleted) {
       // rowDeleted will return number of rows deleted
       if (rowDeleted === 1) {
         return res.json({ return: true });
@@ -57,9 +61,9 @@ class RecipientsController {
       response = await Recipients.findAll({
         where: {
           name: {
-            [Op.like]: `%${filter}%`
-          }
-        }
+            [Op.like]: `%${filter}%`,
+          },
+        },
       });
     } else {
       response = await Recipients.findAll();

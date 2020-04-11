@@ -78,3 +78,17 @@ export function selectProdutos(data, id) {
     payload: { data, id },
   };
 }
+
+export function getDeliveryManOptions() {
+  return {
+    type: "@delivery/GET_DELIVERY_MAN_OPTIONS_REQUEST",
+  };
+}
+
+export function getDeliveryManOptionsSuccess(data) {
+  console.tron.log("selecionando Recipient:" + data);
+  return {
+    type: "@delivery/GET_DELIVERY_MAN_OPTIONS_SUCCESS",
+    payload: { data },
+  };
+}

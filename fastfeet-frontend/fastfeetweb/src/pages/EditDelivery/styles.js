@@ -19,12 +19,9 @@ export const Header = styled.div`
   display: flex;
 
   span {
-    /* margin-right: 300px; */
     font-size: 20px;
-    /* font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif; */
     color: black;
     width: 60%;
-    /* padding-left: 10%; */
     font-weight: bold;
   }
 
@@ -43,24 +40,57 @@ export const Header = styled.div`
 
 export const DIVFORM = styled.div`
   background-color: white;
-  width: 100%;
-  height: 500px;
+  width: 80%;
+  height: 250px;
   max-width: 80%;
   align-items: center;
   padding-bottom: 40px;
+  display: column;
+  padding-right: 4%;
+  padding-top: 30px;
 `;
-export const IMPUT = styled.div`
-  align-items: center;
+
+export const INPUTNAME = styled.div`
   margin-left: 4%;
+  align-items: center;
   input {
-    width: 95%;
+    width: 100%;
     height: 40px;
     margin-bottom: 10px;
     margin-top: 5px;
     padding-left: 10px;
   }
   label {
-    width: 95%;
+    width: 100%;
+    font-weight: bold;
+  }
+`;
+
+export const DIVSELECTS = styled.div`
+  margin-left: 4%;
+  width: 100%;
+  display: flex;
+
+  input {
+    width: 100%;
+    height: 40px;
+    margin-bottom: 10px;
+    margin-top: 5px;
+  }
+`;
+export const LABELDESTINATARIO = styled.div`
+  margin-right: 2%;
+  width: 50%;
+  margin-bottom: 10px;
+  label {
+    font-weight: bold;
+  }
+`;
+export const LABELENTREGADOR = styled.div`
+  margin-right: 2%;
+  width: 50%;
+  margin-bottom: 10px;
+  label {
     font-weight: bold;
   }
 `;

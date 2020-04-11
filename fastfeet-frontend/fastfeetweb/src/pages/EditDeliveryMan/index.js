@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Container, Header, BUTTONS, DIVFORM, IMPUT } from "./styles";
+import { Container, Header, DIVFORM, IMPUT } from "./styles";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Input, Label, Select } from "@rocketseat/unform";
 
@@ -8,7 +8,8 @@ import * as Yup from "yup";
 
 import { updateDeliveryManRequest } from "~/store/modules/deliveryMan/actions";
 import AvatarInput from "./../../components/AvatarInput";
-import history from "~/services/history";
+
+import Button from "~/components/Button";
 
 const schema = Yup.object().shape({
   name: Yup.string().required("Nome Obrigatorio"),
@@ -28,22 +29,14 @@ export default function EditDeliveryMan() {
     console.tron.log(data);
     dispatch(updateDeliveryManRequest(data));
   }
-  async function changePage(page) {
-    history.push(page);
-  }
 
   return (
     <Container>
       <Form initialData={deliveryMan} schema={schema} onSubmit={handleSubmit}>
         <Header>
           <span>Edição de entregadores</span>
-          <BUTTONS>
-            <a onClick={() => changePage("/deliveryman")}>
-              <button> VOLTAR</button>
-            </a>
-
-            <button type="submit"> SALVAR</button>
-          </BUTTONS>
+          <Button action={"back"} pageBack={"/deliveryman"}></Button>
+          <Button action={"salvar"} pageBack={"/deliveryman"}></Button>
         </Header>
         <DIVFORM>
           <AvatarInput name="avatarId" />

@@ -5,7 +5,7 @@ import user from "./user/sagas";
 import meet from "./meet/sagas";
 import delivery from "./delivery/sagas";
 import deliveryMan from "./deliveryMan/sagas";
-import recipients from "./recipients/sagas";
+import recipient from "./recipient/sagas";
 import problems from "./problems/sagas";
 
 export default function* rootSaga() {
@@ -15,7 +15,7 @@ export default function* rootSaga() {
     meet,
     delivery,
     deliveryMan,
-    recipients,
+    recipient,
     problems,
   ]);
 }

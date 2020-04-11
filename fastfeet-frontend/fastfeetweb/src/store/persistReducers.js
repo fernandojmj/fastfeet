@@ -12,7 +12,7 @@ export default (reducers) => {
         "meet",
         "delivery",
         "deliveryMan",
-        "recipients",
+        "recipient",
         "problems",
       ],
     },

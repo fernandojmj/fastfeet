@@ -10,6 +10,7 @@ import * as Yup from "yup";
 
 import { saveDeliveryManRequest } from "~/store/modules/deliveryMan/actions";
 import AvatarInput from "./../../components/AvatarInput";
+import Button from "~/components/Button";
 
 const schema = Yup.object().shape({
   name: Yup.string().required("Nome Obrigatorio"),
@@ -37,15 +38,8 @@ export default function CadDeliveryMan() {
       <Form schema={schema} onSubmit={handleSubmit}>
         <Header>
           <span>Cadastro de entregadores</span>
-          <BUTTONS>
-            <a onClick={() => changePage("/deliveryman")}>
-              <button> VOLTAR</button>
-            </a>
-
-            {/* <a onClick={handleSubmit}> */}
-            <button type="submit"> SALVAR</button>
-            {/* </a> */}
-          </BUTTONS>
+          <Button action={"back"} pageBack={"/deliveryman"}></Button>
+          <Button action={"salvar"}></Button>
         </Header>
         <DIVFORM>
           <AvatarInput name="avatarId" />

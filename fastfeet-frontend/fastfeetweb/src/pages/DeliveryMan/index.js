@@ -12,8 +12,6 @@ import {
   selectDeliveryMan,
 } from "~/store/modules/deliveryMan/actions";
 
-import "./styles.css";
-
 import caneta from "~/assets/caneta_edit.png";
 import lixeira from "~/assets/lixeira_excluir.png";
 import visualizar from "~/assets/visualizar.png";
@@ -42,8 +40,6 @@ export default function DeliveryMan() {
   const dispatch = useDispatch();
   let deliverysMan = useSelector((state) => state.deliveryMan.deliverysMan);
   let linhas = useSelector((state) => state.deliveryMan.linhas);
-
-  const [open, setOpen] = React.useState(false);
 
   async function handleItem(id) {
     console.tron.log(linhas);
