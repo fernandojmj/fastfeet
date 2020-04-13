@@ -53,7 +53,7 @@ routes.get(
   authMiddlaware,
   DeliveryManController.showAll
 );
-routes.get("/deliveryMan/show/:id", authMiddlaware, DeliveryManController.show);
+routes.get("/deliveryMan/show/:id", DeliveryManController.show);
 routes.get(
   "/deliveryMan",
   authMiddlaware,

@@ -4,8 +4,22 @@ import ModelFile from "../models/File";
 
 class DeliveryManController {
   async show(req, res) {
-    const rec = await DeliveryMan.findByPk(req.params.id);
-    return res.json(rec);
+    const Op = Sequelize.Op;
+    const rec = await DeliveryMan.findAll({
+      include: [
+        {
+          model: ModelFile,
+          as: "avatarid",
+          attributes: ["url", "path", "id"],
+        },
+      ],
+      where: {
+        id: {
+          [Op.eq]: req.params.id,
+        },
+      },
+    });
+    return res.json(rec[0]);
   }
 
   async showAll(req, res) {
