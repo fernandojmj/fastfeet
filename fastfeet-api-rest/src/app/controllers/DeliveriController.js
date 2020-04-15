@@ -91,7 +91,7 @@ class DeliveriController {
     // moment.locale();
     const horaAtual = moment().hour();
     const hourEnd = await !moment(horaAtual).isAfter(23);
-    const hourStart = await moment(horaAtual).isAfter(8);
+    const hourStart = await moment(horaAtual).isAfter(1);
     let returnWithdrawal = false;
 
     const qtdRetiradaDia = await Deliveri.findAll({
@@ -243,6 +243,27 @@ class DeliveriController {
   async findDeliveryByDeliveryMan(req, res) {
     const Op = Sequelize.Op;
     const response = await Deliveri.findAll({
+      include: [
+        {
+          model: DeliveryMan,
+          as: "deliveryman",
+          include: [
+            {
+              model: Files,
+              as: "avatarid",
+            },
+          ],
+        },
+        {
+          model: Recipients,
+          as: "recipient",
+        },
+        // ,
+        // {
+        //   model: DeliveryProblems,
+        //   as: "deliveryProblems"
+        // }
+      ],
       where: {
         endDate: {
           [Op.is]: null,

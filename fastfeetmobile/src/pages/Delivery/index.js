@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 
-import {TouchableOpacity, Text} from 'react-native';
-import api from '../../services/api';
+import {TouchableOpacity, Text, View} from 'react-native';
 import AsyncStorange from '@react-native-community/async-storage';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import IconMaterial from 'react-native-vector-icons/MaterialCommunityIcons';
+import {ProgressSteps, ProgressStep} from 'react-native-progress-steps';
 import AvatarText from './../../components/AvatarNome';
+import api from '../../services/api';
 
 import {
   Header,
@@ -28,6 +29,7 @@ import {
   VIEWSTATUSITEM,
   LinhaIn,
   TITLEITEM,
+  STEP,
 } from './styles';
 
 // import { Container } from './styles';
@@ -151,7 +153,35 @@ export default class Delivery extends Component {
                   <Icon name="truck" size={19} color="#7d40e7" />
                   <TITLEITEM>Encomenda {item.id}</TITLEITEM>
                 </VIEWTITLEITEM>
-                <VIEWSTATUSITEM></VIEWSTATUSITEM>
+                <VIEWSTATUSITEM>
+                  <ProgressSteps
+                    activeStep={item.statusNumber}
+                    // progressBarColor="#7d40e7"
+                    disabledStepIconColor="#be9ff3"
+                    disabledStepNumColor="#be9ff3"
+                    activeStepIconBorderColor="#7d40e7"
+                    completedStepIconColor="#7d40e7"
+                    completedProgressBarColor="#7d40e7"
+                    activeStepIconColor="#7d40e7"
+                    completedCheckColor="#7d40e7"
+                    activeStepNumColor="#7d40e7"
+                    activeLabelColor="#7d40e7">
+                    <ProgressStep label="Aguardando Retirada" removeBtnRow>
+                      <STEP></STEP>
+                    </ProgressStep>
+                    <ProgressStep label="Retirada" removeBtnRow>
+                      <View
+                        style={{
+                          alignItems: 'center',
+                          width: '4px',
+                          height: '4px',
+                        }}></View>
+                    </ProgressStep>
+                    <ProgressStep label="Entregue" removeBtnRow>
+                      <View style={{alignItems: 'center'}}></View>
+                    </ProgressStep>
+                  </ProgressSteps>
+                </VIEWSTATUSITEM>
               </LinhaIn>
               <VIEWDETALHES></VIEWDETALHES>
             </Linha>

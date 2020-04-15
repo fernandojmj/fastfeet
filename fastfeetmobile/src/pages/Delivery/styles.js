@@ -131,9 +131,16 @@ export const TITLEITEM = styled.Text`
 export const VIEWSTATUSITEM = styled.View`
   flex-direction: row;
   margin-top: 20px;
+  width: 100%;
 `;
 
 export const VIEWDETALHES = styled.View`
   flex-direction: row;
   margin-top: 20px;
+`;
+
+export const STEP = styled.View`
+  align-items: center;
+  height: 1px;
+  width: 1px;
 `;
