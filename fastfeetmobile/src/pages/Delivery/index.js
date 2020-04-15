@@ -1,26 +1,33 @@
 import React, {Component} from 'react';
 
-import {TouchableOpacity} from 'react-native';
+import {TouchableOpacity, Text} from 'react-native';
 import api from '../../services/api';
 import AsyncStorange from '@react-native-community/async-storage';
 import moment from 'moment';
-import {Icon, Avatar} from 'react-native-material-ui';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import IconMaterial from 'react-native-vector-icons/MaterialCommunityIcons';
 import AvatarText from './../../components/AvatarNome';
 
 import {
   Header,
   Container,
-  VIEWAVATAR,
   Name,
-  Data,
+  VIEWTITLE,
   Repos,
   Repositorio,
   Linha,
-  Button,
+  TITLE,
   Welcome,
   VIEWNAME,
   VIEWEXIT,
   AvatarFoto,
+  ButtonEntregues,
+  ButtonPendentes,
+  VIEWDETALHES,
+  VIEWTITLEITEM,
+  VIEWSTATUSITEM,
+  LinhaIn,
+  TITLEITEM,
 } from './styles';
 
 // import { Container } from './styles';
@@ -120,17 +127,33 @@ export default class Delivery extends Component {
           </VIEWNAME>
           <VIEWEXIT>
             <TouchableOpacity onPress={this.voltar}>
-              <Icon name="exit-to-app" color="red" />
+              <IconMaterial name="exit-to-app" color="red" size={19} />
             </TouchableOpacity>
           </VIEWEXIT>
         </Header>
+        <VIEWTITLE>
+          <TITLE>Entregas</TITLE>
+          <TouchableOpacity>
+            <ButtonPendentes>Pendentes</ButtonPendentes>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <ButtonEntregues>Entregues</ButtonEntregues>
+          </TouchableOpacity>
+        </VIEWTITLE>
+
         <Repos
           data={deliveryes}
           keyExtractor={(repo) => String(repo.id)}
           renderItem={({item}) => (
             <Linha>
-              <Repositorio>{item.product}</Repositorio>
-              <Repositorio>{item.recipient.rua}</Repositorio>
+              <LinhaIn>
+                <VIEWTITLEITEM>
+                  <Icon name="truck" size={19} color="#7d40e7" />
+                  <TITLEITEM>Encomenda {item.id}</TITLEITEM>
+                </VIEWTITLEITEM>
+                <VIEWSTATUSITEM></VIEWSTATUSITEM>
+              </LinhaIn>
+              <VIEWDETALHES></VIEWDETALHES>
             </Linha>
           )}
         />

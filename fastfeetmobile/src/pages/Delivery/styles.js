@@ -80,17 +80,60 @@ export const Repositorio = styled.Text`
   margin-bottom: 10px;
   text-align: center;
 `;
-export const Linha = styled.View`
-  background-color: #9932cc;
-  margin-top: 10px;
-  text-align: center;
-  border-radius: 50;
+
+export const VIEWTITLE = styled.View`
+  flex-direction: row;
+  margin-top: 2px;
 `;
 
-export const Button = styled.Button`
-  background-color: #ff3030;
+export const TITLE = styled.Text`
+  font-weight: bold;
+  font-size: 20px;
+  width: 60%;
+`;
+
+export const ButtonEntregues = styled.Text`
+  /* width: 20%; */
+  margin-top: 5px;
+  color: #c8c8c8;
+  font-weight: bold;
+  margin-left: 4px;
+`;
+export const ButtonPendentes = styled.Text`
+  /* width: 20%; */
+  color: #be9ff3;
+  text-decoration: underline;
+  margin-top: 5px;
+  font-weight: bold;
+`;
+export const Linha = styled.View`
+  background-color: #f8f9fd;
+  margin-top: 10px;
+`;
+export const LinhaIn = styled.View`
+  background-color: #ffff;
+  margin: 3px;
+`;
+
+export const VIEWTITLEITEM = styled.View`
+  flex-direction: row;
+  margin-top: 10px;
+  margin-left: 10px;
+`;
+export const TITLEITEM = styled.Text`
+  flex-direction: row;
+  margin-left: 5px;
+  font-weight: bold;
+  color: #7d40e7;
+  font-size: 15px;
+`;
+
+export const VIEWSTATUSITEM = styled.View`
+  flex-direction: row;
   margin-top: 20px;
-  text-align: center;
-  border-radius: 50;
-  color: #ffff;
+`;
+
+export const VIEWDETALHES = styled.View`
+  flex-direction: row;
+  margin-top: 20px;
 `;
