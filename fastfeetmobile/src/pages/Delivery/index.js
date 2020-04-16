@@ -4,7 +4,7 @@ import {TouchableOpacity, Text, View} from 'react-native';
 import AsyncStorange from '@react-native-community/async-storage';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import IconMaterial from 'react-native-vector-icons/MaterialCommunityIcons';
+import IconMaterial from 'react-native-vector-icons/MaterialIcons';
 import {ProgressSteps, ProgressStep} from 'react-native-progress-steps';
 import AvatarText from './../../components/AvatarNome';
 import api from '../../services/api';
@@ -30,6 +30,8 @@ import {
   LinhaIn,
   TITLEITEM,
   STEP,
+  VIEWHEADDETALHES,
+  DETALHES,
 } from './styles';
 
 // import { Container } from './styles';
@@ -45,6 +47,7 @@ export default class Delivery extends Component {
     user: '',
     url: '',
     sigla: '',
+    clickButton: '',
   };
 
   voltar = async () => {
@@ -90,7 +93,10 @@ export default class Delivery extends Component {
         user: navigation.getParam('responseUser'),
       });
 
-      if (navigation.getParam('responseUser').avatarid.url != null) {
+      if (
+        navigation.getParam('responseUser').avatarid != null &&
+        navigation.getParam('responseUser').avatarid.url != null
+      ) {
         this.setState({
           url: navigation.getParam('responseUser').avatarid.url,
         });
@@ -99,12 +105,42 @@ export default class Delivery extends Component {
       await this.getCaractersStart(navigation.getParam('responseUser').name);
     }
 
+    this.setState({
+      clickButton: 'pendente',
+    });
+
     console.log('--------------------------------');
     console.log(this.state.deliveryes);
     console.log('--------------------------------');
     console.log(this.state.user);
     console.log('--------------------------------');
   }
+
+  getDeliveryes = async () => {
+    const response = await api.get(
+      `deliveryMan/${this.state.user.id}/deliveries`,
+    );
+    this.setState({
+      deliveryes: response.data.response,
+    });
+
+    this.setState({
+      clickButton: 'pendente',
+    });
+  };
+
+  getDeliveryeds = async () => {
+    const response = await api.get(
+      `deliveryMan/${this.state.user.id}/deliveried`,
+    );
+    this.setState({
+      deliveryes: response.data.response,
+    });
+
+    this.setState({
+      clickButton: 'entregue',
+    });
+  };
 
   render() {
     const {deliveryes} = this.state;
@@ -113,7 +149,7 @@ export default class Delivery extends Component {
     const {sigla} = this.state;
 
     const create_at = moment(user.createdAt).format('DD-MM-YYYY hh:mm:ss');
-    const updated_at = moment(user.updatedAt).format('DD-MM-YYYY hh:mm:ss');
+    const updated_at = moment(user.updatedAt).format('DD/MM/YYYY');
     return (
       <Container>
         <Header>
@@ -129,17 +165,21 @@ export default class Delivery extends Component {
           </VIEWNAME>
           <VIEWEXIT>
             <TouchableOpacity onPress={this.voltar}>
-              <IconMaterial name="exit-to-app" color="red" size={19} />
+              <IconMaterial name="exit-to-app" color="red" size={24} />
             </TouchableOpacity>
           </VIEWEXIT>
         </Header>
         <VIEWTITLE>
           <TITLE>Entregas</TITLE>
-          <TouchableOpacity>
-            <ButtonPendentes>Pendentes</ButtonPendentes>
+          <TouchableOpacity onPress={this.getDeliveryes}>
+            <ButtonPendentes clickButton={this.state.clickButton}>
+              Pendentes
+            </ButtonPendentes>
           </TouchableOpacity>
-          <TouchableOpacity>
-            <ButtonEntregues>Entregues</ButtonEntregues>
+          <TouchableOpacity onPress={this.getDeliveryeds}>
+            <ButtonEntregues clickButton={this.state.clickButton}>
+              Entregues
+            </ButtonEntregues>
           </TouchableOpacity>
         </VIEWTITLE>
 
@@ -163,18 +203,18 @@ export default class Delivery extends Component {
                     completedStepIconColor="#7d40e7"
                     completedProgressBarColor="#7d40e7"
                     activeStepIconColor="#7d40e7"
-                    completedCheckColor="#7d40e7"
+                    completedCheckColor="#ffff"
                     activeStepNumColor="#7d40e7"
                     activeLabelColor="#7d40e7">
                     <ProgressStep label="Aguardando Retirada" removeBtnRow>
-                      <STEP></STEP>
+                      <View style={{alignItems: 'center'}}></View>
                     </ProgressStep>
                     <ProgressStep label="Retirada" removeBtnRow>
                       <View
                         style={{
                           alignItems: 'center',
-                          width: '4px',
-                          height: '4px',
+                          // width: '4px',
+                          // height: '4px',s
                         }}></View>
                     </ProgressStep>
                     <ProgressStep label="Entregue" removeBtnRow>
@@ -183,7 +223,57 @@ export default class Delivery extends Component {
                   </ProgressSteps>
                 </VIEWSTATUSITEM>
               </LinhaIn>
-              <VIEWDETALHES></VIEWDETALHES>
+              <VIEWDETALHES>
+                <VIEWHEADDETALHES>
+                  <Text
+                    style={{
+                      marginLeft: 20,
+                      fontSize: 10,
+                      color: '#8B8989',
+                      fontWeight: 'bold',
+                      width: '30%',
+                    }}>
+                    Data
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 10,
+                      color: '#8B8989',
+                      fontWeight: 'bold',
+                      width: '20%',
+                    }}>
+                    Cidade
+                  </Text>
+                </VIEWHEADDETALHES>
+                <DETALHES>
+                  <Text
+                    style={{
+                      marginLeft: 20,
+                      fontSize: 14,
+                      fontWeight: 'bold',
+                      width: '30%',
+                    }}>
+                    {moment(item.createdAt).format('DD/MM/YYYY')}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 'bold',
+                      width: '33%',
+                    }}>
+                    {item.recipient.cidade}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 'bold',
+                      color: '#7d40e7',
+                      width: '30%',
+                    }}>
+                    Ver detalhes
+                  </Text>
+                </DETALHES>
+              </VIEWDETALHES>
             </Linha>
           )}
         />
@@ -191,3 +281,9 @@ export default class Delivery extends Component {
     );
   }
 }
+Delivery.navigationOptions = {
+  tabBarLabel: 'Entregas',
+  tabBarIcon: ({tintColor}) => (
+    <IconMaterial name="menu" size={20} color={tintColor} />
+  ),
+};

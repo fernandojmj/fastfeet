@@ -2,17 +2,10 @@ import styled from 'styled-components/native';
 
 export const Container = styled.View`
   flex: 1;
-  padding: 30px;
+  padding: 20px;
+  padding-bottom: 10px;
   background-color: #ffff;
-
-  button: {
-    backgroundColor: #ff3030,
-    borderRadius: 50,
-    height: 44,
-    marginTop: metrics.baseMargin,
-    justifyContent: 'center',
-    alignItems: 'center',
-  }
+  width: 100%;
 `;
 
 export const VIEWNAME = styled.View`
@@ -31,7 +24,7 @@ export const Header = styled.View`
 export const VIEWEXIT = styled.View`
   flex-direction: row;
   margin-top: 30px;
-  margin-left: 100px;
+  margin-left: 80px;
   width: 20%;
 `;
 
@@ -59,18 +52,10 @@ export const Welcome = styled.Text`
   margin-left: 5px;
 `;
 
-export const Data = styled.Text`
-  font-size: 10px;
-  color: #f34;
-  font-weight: bold;
-  margin-top: 10px;
-  text-align: center;
-`;
-
 export const Repos = styled.FlatList.attrs({
-  showsVerticalScrollIndicator: false,
+  showsVerticalScrollIndicator: true,
 })`
-  margin-top: 20px;
+  margin-top: 5px;
 `;
 
 export const Repositorio = styled.Text`
@@ -93,22 +78,28 @@ export const TITLE = styled.Text`
 `;
 
 export const ButtonEntregues = styled.Text`
-  /* width: 20%; */
   margin-top: 5px;
-  color: #c8c8c8;
   font-weight: bold;
   margin-left: 4px;
+  color: ${(props) =>
+    props.clickButton === 'entregue' ? '#be9ff3' : '#c8c8c8'};
+  text-decoration: ${(props) =>
+    props.clickButton === 'entregue' ? 'underline' : 'none'};
 `;
 export const ButtonPendentes = styled.Text`
-  /* width: 20%; */
-  color: #be9ff3;
-  text-decoration: underline;
+  color: ${(props) =>
+    props.clickButton === 'pendente' ? '#be9ff3' : '#c8c8c8'};
+  text-decoration: ${(props) =>
+    props.clickButton === 'pendente' ? 'underline' : 'none'};
   margin-top: 5px;
   font-weight: bold;
 `;
 export const Linha = styled.View`
   background-color: #f8f9fd;
-  margin-top: 10px;
+
+  height: 220px;
+  padding-bottom: 8px;
+  width: 100%;
 `;
 export const LinhaIn = styled.View`
   background-color: #ffff;
@@ -130,17 +121,23 @@ export const TITLEITEM = styled.Text`
 
 export const VIEWSTATUSITEM = styled.View`
   flex-direction: row;
-  margin-top: 20px;
   width: 100%;
 `;
 
 export const VIEWDETALHES = styled.View`
-  flex-direction: row;
-  margin-top: 20px;
+  flex-direction: column;
+  margin-top: 10px;
 `;
 
 export const STEP = styled.View`
   align-items: center;
   height: 1px;
   width: 1px;
+`;
+export const VIEWHEADDETALHES = styled.View`
+  flex-direction: row;
+`;
+
+export const DETALHES = styled.View`
+  flex-direction: row;
 `;
