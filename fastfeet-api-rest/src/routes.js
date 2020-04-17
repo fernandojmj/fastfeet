@@ -80,7 +80,7 @@ routes.post(
 routes.post("/deliveries/create", authMiddlaware, DeliveriController.create);
 
 routes.get("/delivery/showAll", authMiddlaware, DeliveriController.showAll);
-routes.get("/delivery/show/:id", authMiddlaware, DeliveriController.show);
+routes.get("/delivery/show/:id", DeliveriController.show);
 routes.put("/delivery/edit/:id", authMiddlaware, DeliveriController.update);
 routes.delete(
   "/delivery/delete/:id",

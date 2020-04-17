@@ -8,7 +8,17 @@ import Files from "../models/File";
 
 class DeliveriController {
   async show(req, res) {
-    const rec = await Deliveri.findByPk(req.params.id);
+    const rec = await Deliveri.findOne({
+      include: [
+        {
+          model: Recipients,
+          as: "recipient",
+        },
+      ],
+      where: {
+        id: req.params.id,
+      },
+    });
     return res.json(rec);
   }
 
@@ -90,8 +100,8 @@ class DeliveriController {
     const Op = Sequelize.Op;
     // moment.locale();
     const horaAtual = moment().hour();
-    const hourEnd = await !moment(horaAtual).isAfter(23);
-    const hourStart = await moment(horaAtual).isAfter(1);
+    const hourEnd = await !moment(horaAtual).isAfter(18);
+    const hourStart = await moment(horaAtual).isAfter(8);
     let returnWithdrawal = false;
 
     const qtdRetiradaDia = await Deliveri.findAll({
@@ -167,6 +177,8 @@ class DeliveriController {
         }
       });
     });
+
+    return res.json(response);
   }
   async deliveryEndManual(req, res) {
     console.log(req.params);
@@ -281,6 +293,27 @@ class DeliveriController {
   async findDeliveredByDeliveryMan(req, res) {
     const Op = Sequelize.Op;
     const response = await Deliveri.findAll({
+      include: [
+        {
+          model: DeliveryMan,
+          as: "deliveryman",
+          include: [
+            {
+              model: Files,
+              as: "avatarid",
+            },
+          ],
+        },
+        {
+          model: Recipients,
+          as: "recipient",
+        },
+        // ,
+        // {
+        //   model: DeliveryProblems,
+        //   as: "deliveryProblems"
+        // }
+      ],
       where: {
         endDate: {
           [Op.not]: null,

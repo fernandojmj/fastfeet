@@ -105,6 +105,11 @@ export default class Delivery extends Component {
       await this.getCaractersStart(navigation.getParam('responseUser').name);
     }
 
+    redirect = async (deliveryId) => {
+      const {navigation} = this.props;
+      navigation.navigate('DeliveryDetail', {deliveryId});
+    };
+
     this.setState({
       clickButton: 'pendente',
     });
@@ -263,15 +268,19 @@ export default class Delivery extends Component {
                     }}>
                     {item.recipient.cidade}
                   </Text>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      fontWeight: 'bold',
-                      color: '#7d40e7',
-                      width: '30%',
-                    }}>
-                    Ver detalhes
-                  </Text>
+                  <TouchableOpacity
+                    style={{width: '100%'}}
+                    onPress={() => redirect(item.id)}>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: 'bold',
+                        color: '#7d40e7',
+                        width: '30%',
+                      }}>
+                      Ver detalhes
+                    </Text>
+                  </TouchableOpacity>
                 </DETALHES>
               </VIEWDETALHES>
             </Linha>

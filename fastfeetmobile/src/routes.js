@@ -5,6 +5,7 @@ import {createBottomTabNavigator} from 'react-navigation-tabs';
 import Login from './pages/Login';
 import Delivery from './pages/Delivery';
 import Profile from './pages/Profile';
+import DeliveryDetail from './pages/DeliveryDetail';
 
 const Routes = (userLogged = false) =>
   createAppContainer(
@@ -31,6 +32,7 @@ const Routes = (userLogged = false) =>
             },
           },
         ),
+        DeliveryDetail,
       },
       {
         initialRouteName: userLogged ? 'App' : 'Sign',
