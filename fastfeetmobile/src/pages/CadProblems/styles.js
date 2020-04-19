@@ -25,12 +25,13 @@ export const VIEWDETALHES = styled.View`
   margin-left: 5%;
   margin-top: 15%;
   width: 90%;
-  height: 32%;
+  height: 50%;
   background-color: #ffff;
   border-radius: 5;
   border-style: solid;
   border-color: #f8f9fd;
   border-width: 2px;
+  align-items: center;
 `;
 export const VIEWSTATUS = styled.View`
   flex-direction: column;
@@ -64,7 +65,6 @@ export const VIEWBUTON = styled.View`
   width: 33.3%;
   border-width: 3px;
   height: 100%;
-  align-items: center;
 `;
 
 export const AvatarFoto = styled.Image`
