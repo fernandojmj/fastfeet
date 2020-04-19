@@ -15,7 +15,7 @@ import Button from "~/components/Button";
 const schema = Yup.object().shape({
   name: Yup.string().required("Nome Obrigatorio"),
   email: Yup.string().email().required("Favor informar um email valido"),
-  avatarId: Yup.number().required("Favor inserir uma foto"),
+  avatarId: Yup.number(),
 });
 
 export default function CadDeliveryMan() {

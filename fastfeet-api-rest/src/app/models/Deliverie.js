@@ -27,6 +27,24 @@ class Deliverie extends Model {
             }
           },
         },
+        statusLiteral: {
+          type: Sequelize.VIRTUAL,
+          get() {
+            if (this.endDate != null) {
+              return "Entregue";
+              // return "ENTREGUE";
+            } else if (this.canceledAt != null) {
+              return "Cancelada";
+              // return "CANCELADA";
+            } else if (this.startDate != null) {
+              return "Retirada";
+              // return "RETIRADA";
+            } else {
+              return "Pendente";
+              // return "PENDENTE";
+            }
+          },
+        },
       },
       {
         sequelize,
