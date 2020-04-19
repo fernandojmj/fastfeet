@@ -99,6 +99,11 @@ export default class DeliveryDetail extends Component {
     const {deliveryId} = this.state;
     navigation.navigate('Problems', {deliveryId});
   };
+  ConfirmDelivery = async () => {
+    const {navigation} = this.props;
+    const {deliveryId} = this.state;
+    navigation.navigate('ConfirmDelivery', {deliveryId});
+  };
 
   render() {
     const {delivery, error} = this.state;
@@ -337,33 +342,37 @@ export default class DeliveryDetail extends Component {
                 </Text>
               </VIEWBUTON>
             </TouchableOpacity>
-            <VIEWBUTON style={{alignItems: 'center'}}>
-              <IconMaterial
-                name="check-circle-outline"
-                size={25}
-                color="#7d40e7"
-                style={{marginTop: 10}}></IconMaterial>
-              <Text
-                style={{
-                  color: '#CDC9C9',
-                  marginLeft: 10,
-                  width: '60%',
-                  fontSize: 13,
-                  alignSelf: 'center',
-                }}>
-                {'Confirmar'}
-              </Text>
-              <Text
-                style={{
-                  color: '#CDC9C9',
-                  marginLeft: 15,
-                  width: '60%',
-                  fontSize: 13,
-                  alignSelf: 'center',
-                }}>
-                {'Entrega'}
-              </Text>
-            </VIEWBUTON>
+            <TouchableOpacity
+              styled={{alignItems: 'center', width: '100%'}}
+              onPress={() => this.ConfirmDelivery()}>
+              <VIEWBUTON style={{alignItems: 'center', width: '100%'}}>
+                <IconMaterial
+                  name="check-circle-outline"
+                  size={25}
+                  color="#7d40e7"
+                  style={{marginTop: 10}}></IconMaterial>
+                <Text
+                  style={{
+                    color: '#CDC9C9',
+                    marginLeft: 10,
+                    width: '60%',
+                    fontSize: 13,
+                    alignSelf: 'center',
+                  }}>
+                  {'Confirmar'}
+                </Text>
+                <Text
+                  style={{
+                    color: '#CDC9C9',
+                    marginLeft: 15,
+                    width: '60%',
+                    fontSize: 13,
+                    alignSelf: 'center',
+                  }}>
+                  {'Entrega'}
+                </Text>
+              </VIEWBUTON>
+            </TouchableOpacity>
           </VIEWBOTTONS>
         ) : (
           <View></View>

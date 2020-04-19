@@ -8,6 +8,7 @@ import Profile from './pages/Profile';
 import DeliveryDetail from './pages/DeliveryDetail';
 import CadProblems from './pages/CadProblems';
 import Problems from './pages/Problems';
+import ConfirmDelivery from './pages/ConfirmDelivery';
 
 const Routes = (userLogged = false) =>
   createAppContainer(
@@ -37,6 +38,7 @@ const Routes = (userLogged = false) =>
         DeliveryDetail,
         CadProblems,
         Problems,
+        ConfirmDelivery,
       },
       {
         initialRouteName: userLogged ? 'App' : 'Sign',

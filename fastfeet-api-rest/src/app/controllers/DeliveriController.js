@@ -163,8 +163,12 @@ class DeliveriController {
     console.log(req.params);
     // moment.locale();
     const dataAtual = await moment().format();
+
+    const signature_id = req.body.signature_id;
+
     const requestUpdate = {
       endDate: dataAtual,
+      signatureId: signature_id,
     };
     let response = false;
     await Deliveri.update(requestUpdate, {

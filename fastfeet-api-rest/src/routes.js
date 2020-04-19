@@ -16,12 +16,7 @@ const upload = multer(multerConfig);
 
 routes.post("/users", UserController.store);
 routes.post("/sessions", SessionController.store);
-routes.post(
-  "/files",
-  authMiddlaware,
-  upload.single("file"),
-  FileController.store
-);
+routes.post("/files", upload.single("file"), FileController.store);
 
 // Recipients
 routes.get(
@@ -106,7 +101,7 @@ routes.get(
   "/delivery/withdrawal/:id/deliveryman/:deliveryManId",
   DeliveriController.withdrawal
 );
-routes.get("/delivery/deliveryEnd/:id", DeliveriController.deliveryEnd);
+routes.put("/delivery/deliveryEnd/:id", DeliveriController.deliveryEnd);
 routes.post(
   "/delivery/withdrawalManual",
   DeliveriController.deliveryStartManual
