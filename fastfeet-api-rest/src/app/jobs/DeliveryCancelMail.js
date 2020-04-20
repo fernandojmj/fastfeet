@@ -6,6 +6,7 @@ class DeliveryCancelMail {
   }
 
   async handle({ data }) {
+    console.log("Enviando E-mail");
     const { deliveryman, delivery, recipient, problem } = data;
 
     await Mail.sendMail({

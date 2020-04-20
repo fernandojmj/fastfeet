@@ -4,6 +4,7 @@ import Sequelize from "sequelize";
 import DeliveryProblems from "../models/DeliveryProblems";
 import RecipientsModel from "../models/Recipients";
 import DeliveryManModel from "../models/DeliveryMan";
+import Mail from "../../lib/Mail";
 
 import Files from "../models/File";
 import Queue from "../../lib/Queue";
@@ -90,10 +91,29 @@ class DeliveriController {
       deliveryman_id: DeliveryMan,
     });
 
-    await Queue.add(DeliveryReadyMail.key, {
-      deliveryman: deliveryManOBject,
-      delivery,
-      recipientObject,
+    // await Queue.add(DeliveryReadyMail.key, {
+    //   deliveryman: deliveryManOBject,
+    //   delivery,
+    //   recipientObject,
+    // });
+    console.log(deliveryManOBject);
+    console.log(delivery);
+    console.log(recipientObject);
+    await Mail.sendMail({
+      to: `${deliveryManOBject.name} <${deliveryManOBject.email}>`,
+      subject: "FastFeet | Encomenda pronta para retirada!",
+      template: "delivery_ready",
+      context: {
+        deliviremanName: `${deliveryManOBject.name}`,
+        product: delivery.product,
+        cidade: recipientObject.cidade,
+        rua: recipientObject.rua,
+        complemento: recipientObject.complemento,
+        estado: recipientObject.estado,
+        cep: recipientObject.cep,
+        destinatario: recipientObject.name,
+        numero: recipientObject.numero,
+      },
     });
 
     return res.json(delivery);
@@ -133,7 +153,7 @@ class DeliveriController {
     const Op = Sequelize.Op;
     // moment.locale();
     const horaAtual = moment().hour();
-    const hourEnd = await !moment(horaAtual).isAfter(23);
+    const hourEnd = await !moment(horaAtual).isAfter(18);
     const hourStart = await moment(horaAtual).isAfter(8);
     let returnWithdrawal = false;
 

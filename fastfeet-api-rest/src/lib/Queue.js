@@ -1,8 +1,8 @@
-import Bee from 'bee-queue';
+import Bee from "bee-queue";
 
-import DeliveryReadyMail from '../app/jobs/DeliveryReadyMail';
-import DeliveryCancelMail from '../app/jobs/DeliveryCancelMail';
-import redisConfig from '../config/redis';
+import DeliveryReadyMail from "../app/jobs/DeliveryReadyMail";
+import DeliveryCancelMail from "../app/jobs/DeliveryCancelMail";
+import redisConfig from "../config/redis";
 
 const jobs = [DeliveryCancelMail, DeliveryReadyMail];
 
@@ -25,14 +25,16 @@ class Queue {
   }
 
   add(queue, job) {
+    console.log("Adicionadno pedido a fila redis");
+
     return this.queues[queue].bee.createJob(job).save();
   }
 
   processQueue() {
-    jobs.forEach(job => {
+    jobs.forEach((job) => {
       const { bee, handle } = this.queues[job.key];
-
-      bee.on('failed', this.handleFailure).process(handle);
+      console.log(handle);
+      bee.on("failed", this.handleFailure).process(handle);
     });
   }
 
