@@ -3,11 +3,7 @@ import moment from "moment-timezone";
 import Sequelize from "sequelize";
 import DeliveryMan from "../models/DeliveryMan";
 import Deliverie from "../models/Deliverie";
-import Recipient from "../models/Recipients";
-
 import DeliveryProblems from "../models/DeliveryProblems";
-import Queue from "../../lib/Queue";
-import DeliveryCancelMail from "../jobs/DeliveryCancelMail";
 
 class DeliveryProblemsController {
   //entregador cadastrar problemas na entrega apenas informando seu ID de cadastro (ID da encomenda no banco de dados);
@@ -56,24 +52,10 @@ class DeliveryProblemsController {
       },
     });
     let idDelivery = null;
-    let delivery = null;
-    let deliveryProblem = null;
     response.map((item) => {
       console.log(item.delivery.id);
-      delivery = item.delivery;
       idDelivery = item.delivery.id;
-      deliveryProblem = item;
     });
-
-    if (delivery == null) {
-      return response.status(400).json({ error: "Encomenda não encontrada" });
-    }
-
-    if (delivery.canceled_at) {
-      return response
-        .status(401)
-        .json({ error: "A encomenda já está cancelada" });
-    }
 
     const dataAtual = await moment().format();
     const requestUpdate = {
@@ -93,16 +75,6 @@ class DeliveryProblemsController {
           response = false;
         }
       });
-    });
-
-    const recipient = await Recipient.findByPk(delivery.recipient_id);
-    const deliveryMan = await DeliveryMan.findByPk(delivery.deliveryman_id);
-
-    await Queue.add(DeliveryCancelMail.key, {
-      deliveryman: deliveryMan,
-      recipient,
-      delivery,
-      problem: deliveryProblem,
     });
 
     return res.json({ response });
