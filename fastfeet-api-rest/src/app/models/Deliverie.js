@@ -69,17 +69,11 @@ class Deliverie extends Model {
       as: "deliveryProblems",
       foreignKey: "delivery_id",
     });
-  }
 
-  // Deliverie.associate = models => {
-  //   Deliveri.belongsTo(models.DeliveryMan, {
-  //     as: "DeliveryMan",
-  //     foreignKey: "deliveryman_id"
-  //   });
-  //   Deliverie.belongsTo(models.Recipients, {
-  //     as: "recipient",
-  //     foreignKey: "recipient_id"
-  //   });
-  // };
+    this.belongsTo(models.File, {
+      foreignKey: "signatureId",
+      as: "signature_id",
+    });
+  }
 }
 export default Deliverie;

@@ -1,6 +1,13 @@
 import React, {Component} from 'react';
 
-import {TouchableOpacity, Text, View, Button, TextInput} from 'react-native';
+import {
+  TouchableOpacity,
+  Text,
+  View,
+  Button,
+  TextInput,
+  ToastAndroid,
+} from 'react-native';
 import AsyncStorange from '@react-native-community/async-storage';
 import moment from 'moment';
 import IconFeather from 'react-native-vector-icons/Feather';
@@ -59,9 +66,10 @@ export default class CadProblems extends Component {
     console.log(data);
     if (data.description == '') {
       this.setState({
-        error: 'Informe o problema no campo.',
         description: '',
       });
+      ToastAndroid.show('Informe o problema!', ToastAndroid.LONG);
+
       return '';
     }
     const response = await api.post(
@@ -71,13 +79,12 @@ export default class CadProblems extends Component {
     console.log(response.data);
     if ((response.data !== undefined) & (response.data.id != null)) {
       this.setState({
-        error: 'Cadastrado problema com Sucesso.',
+        // error: 'Cadastrado problema com Sucesso.',
         description: '',
       });
+      ToastAndroid.show('Cadastrado problema com Sucesso', ToastAndroid.LONG);
     } else {
-      this.setState({
-        error: 'Ocorreu um erro ao cadastrar o Problema',
-      });
+      ToastAndroid.show(response.data.Withdrawal, ToastAndroid.LONG);
     }
   };
 

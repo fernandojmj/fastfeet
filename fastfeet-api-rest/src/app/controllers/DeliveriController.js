@@ -40,6 +40,10 @@ class DeliveriController {
           model: Recipients,
           as: "recipient",
         },
+        {
+          model: Files,
+          as: "signature_id",
+        },
         // ,
         // {
         //   model: DeliveryProblems,
@@ -100,7 +104,7 @@ class DeliveriController {
     const Op = Sequelize.Op;
     // moment.locale();
     const horaAtual = moment().hour();
-    const hourEnd = await !moment(horaAtual).isAfter(18);
+    const hourEnd = await !moment(horaAtual).isAfter(23);
     const hourStart = await moment(horaAtual).isAfter(8);
     let returnWithdrawal = false;
 

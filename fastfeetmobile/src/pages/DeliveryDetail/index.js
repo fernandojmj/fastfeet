@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import {TouchableOpacity, Text, View, Button} from 'react-native';
+import {TouchableOpacity, Text, View, Button, ToastAndroid} from 'react-native';
 import AsyncStorange from '@react-native-community/async-storage';
 import moment from 'moment';
 import IconFeather from 'react-native-vector-icons/Feather';
@@ -79,13 +79,11 @@ export default class DeliveryDetail extends Component {
       this.setState({
         delivery: responseDelivery.data,
       });
+
+      ToastAndroid.show('Retirada realizada com sucesso!', ToastAndroid.LONG);
     } else {
-      this.setState({
-        error: response.data.Withdrawal,
-      });
-      console.log(response.data.Withdrawal);
+      ToastAndroid.show(response.data.Withdrawal, ToastAndroid.LONG);
     }
-    console.log(this.state.error);
   };
 
   infoProblem = async () => {
@@ -301,7 +299,7 @@ export default class DeliveryDetail extends Component {
         {delivery.statusLiteral === 'Retirada' ? (
           <VIEWBOTTONS>
             <TouchableOpacity
-              styled={{alignItems: 'center', width: '100%'}}
+              styled={{alignItems: 'center', width: '30%'}}
               onPress={() => this.infoProblem()}>
               <VIEWBUTON style={{alignItems: 'center', width: '100%'}}>
                 <IconFeather
@@ -322,7 +320,7 @@ export default class DeliveryDetail extends Component {
               </VIEWBUTON>
             </TouchableOpacity>
             <TouchableOpacity
-              styled={{alignItems: 'center', width: '100%'}}
+              styled={{alignItems: 'center', width: '30%'}}
               onPress={() => this.viewProblems()}>
               <VIEWBUTON style={{alignItems: 'center', width: '100%'}}>
                 <IconFeather
@@ -343,7 +341,7 @@ export default class DeliveryDetail extends Component {
               </VIEWBUTON>
             </TouchableOpacity>
             <TouchableOpacity
-              styled={{alignItems: 'center', width: '100%'}}
+              styled={{alignItems: 'center', width: '30%'}}
               onPress={() => this.ConfirmDelivery()}>
               <VIEWBUTON style={{alignItems: 'center', width: '100%'}}>
                 <IconMaterial
@@ -355,7 +353,7 @@ export default class DeliveryDetail extends Component {
                   style={{
                     color: '#CDC9C9',
                     marginLeft: 10,
-                    width: '60%',
+                    width: '100%',
                     fontSize: 13,
                     alignSelf: 'center',
                   }}>
@@ -365,7 +363,7 @@ export default class DeliveryDetail extends Component {
                   style={{
                     color: '#CDC9C9',
                     marginLeft: 15,
-                    width: '60%',
+                    width: '100%',
                     fontSize: 13,
                     alignSelf: 'center',
                   }}>
@@ -408,25 +406,30 @@ export default class DeliveryDetail extends Component {
           <View></View>
         )}
         {delivery.statusLiteral === 'Entregue' ? (
-          <VIEWBOTTONS style={{alignItems: 'center', width: '33%'}}>
-            <VIEWBUTON style={{alignItems: 'center', width: '100%'}}>
-              <IconFeather
-                name="info"
-                size={25}
-                color="#edd492"
-                style={{marginTop: 10}}></IconFeather>
-              <Text
-                style={{
-                  color: '#CDC9C9',
-                  marginLeft: 20,
-                  width: '70%',
-                  fontSize: 13,
-                  alignSelf: 'center',
-                }}>
-                {'   Visualizar Problemas'}
-              </Text>
-            </VIEWBUTON>
-          </VIEWBOTTONS>
+          <TouchableOpacity
+            styled={{alignItems: 'center', width: '100%'}}
+            onPress={() => this.viewProblems()}>
+            <VIEWBOTTONS
+              style={{alignItems: 'center', width: '33%', height: '40%'}}>
+              <VIEWBUTON style={{alignItems: 'center', width: '100%'}}>
+                <IconFeather
+                  name="info"
+                  size={25}
+                  color="#edd492"
+                  style={{marginTop: 10}}></IconFeather>
+                <Text
+                  style={{
+                    color: '#CDC9C9',
+                    marginLeft: 20,
+                    width: '70%',
+                    fontSize: 13,
+                    alignSelf: 'center',
+                  }}>
+                  {'   Visualizar Problemas'}
+                </Text>
+              </VIEWBUTON>
+            </VIEWBOTTONS>
+          </TouchableOpacity>
         ) : (
           <View></View>
         )}

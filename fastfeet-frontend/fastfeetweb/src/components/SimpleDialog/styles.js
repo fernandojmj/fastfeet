@@ -3,8 +3,9 @@ import styled, { css } from "styled-components";
 export const MODAL = styled.div`
   flex-direction: column;
   width: 400px;
-  height: 300px;
+  height: 400px;
   margin-top: 30px;
+  padding-bottom: 10px;
   span {
     padding-left: 10px;
     padding-top: 50px;
@@ -47,4 +48,11 @@ export const DATA = styled.label`
   /* display: flex; */
   font-size: 13px;
   padding-left: 5px;
+`;
+
+export const Signature = styled.div`
+  /* display: flex; */
+  margin-left: 10px;
+  padding-left: 5px;
+  width: 100%;
 `;

@@ -15,7 +15,7 @@ import Dialog from "@material-ui/core/Dialog";
 // import { blue } from "@material-ui/core/colors";
 import { format } from "date-fns";
 import pt from "date-fns/locale/pt";
-import { MODAL, DATAS, DATA, LINHA, LABEL } from "./styles";
+import { MODAL, DATAS, DATA, LINHA, LABEL, Signature } from "./styles";
 import { date } from "yup";
 
 // const emails = ["username@gmail.com", "user02@gmail.com"];
@@ -65,6 +65,13 @@ export default function SimpleDialog(props) {
           </DATAS>
           <LINHA></LINHA>
           <span>Assinatura do destinatário</span>
+          {dados.signatureId !== "" ? (
+            <Signature>
+              <img src={dados.signature_id.url} alt=""></img>
+            </Signature>
+          ) : (
+            ""
+          )}
         </MODAL>
       ) : (
         <MODAL>

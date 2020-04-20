@@ -17,8 +17,8 @@ export default function AvatarInput() {
     console.tron.log("handleChange");
 
     data.append("file", e.target.files[0]);
-    console.tron.log("arquivo");
-
+    console.log("arquivo");
+    console.log(data);
     //chama api
     const response = await api.post(`files`, data);
 

@@ -7,10 +7,12 @@ import {
   ActivityIndicator,
   Image,
   Alert,
+  TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {RNCamera} from 'react-native-camera';
+import IconMaterial from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import api from '../../services/api';
 
@@ -43,6 +45,11 @@ export default function ConfirmDelivery({navigation}) {
     </View>
   );
 
+  async function voltar() {
+    const deliveryId = id;
+    navigation.navigate('DeliveryDetail', {deliveryId});
+  }
+
   function switchCamera() {
     if (cameraType === RNCamera.Constants.Type.back)
       setCameraType(RNCamera.Constants.Type.front);
@@ -64,14 +71,14 @@ export default function ConfirmDelivery({navigation}) {
     console.log('enviando Photo!!');
     const data = new FormData(); // eslint-disable-line
     data.append('file', {
-      filename: photo.uri,
+      uri: photo.uri,
       type: photo.type,
       name: photo.originalname,
     });
     console.log(data);
 
     try {
-      const response = await api.post(`files`, data);
+      const response = await api.post('files', data);
       console.log('photo_gravada' + response.data);
       const {id: signature_id} = response.data;
 
@@ -85,7 +92,8 @@ export default function ConfirmDelivery({navigation}) {
             'Encomenda entregue com sucesso',
             ToastAndroid.LONG,
           );
-          navigation.navigate('Dashboard');
+
+          voltar();
         }
       } else {
         ToastAndroid.show(
@@ -105,7 +113,27 @@ export default function ConfirmDelivery({navigation}) {
     <>
       <StatusBar barStyle="light-content" backgroundColor="#7D40E7" />
       <Container>
-        <HeaderExtented />
+        <HeaderExtented>
+          <View
+            style={{
+              width: '100%',
+              position: 'absolute',
+              alignItems: 'center',
+              marginTop: '2%',
+              flexDirection: 'row',
+            }}>
+            <TouchableOpacity style={{width: '25%'}} onPress={voltar}>
+              <IconMaterial
+                style={{marginLeft: 10, width: '25%'}}
+                name="chevron-left"
+                color="#ffff"
+                size={20}></IconMaterial>
+            </TouchableOpacity>
+            <Text style={{color: '#ffff', fontSize: 15, marginLeft: 50}}>
+              Confirmar Entrega
+            </Text>
+          </View>
+        </HeaderExtented>
         <Content>
           <ContentOverlap>
             <Card>
