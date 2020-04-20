@@ -2,23 +2,32 @@ import Deliveri from "../models/Deliverie";
 import moment from "moment-timezone";
 import Sequelize from "sequelize";
 import DeliveryProblems from "../models/DeliveryProblems";
-import Recipients from "../models/Recipients";
-import DeliveryMan from "../models/DeliveryMan";
+import RecipientsModel from "../models/Recipients";
+import DeliveryManModel from "../models/DeliveryMan";
+
 import Files from "../models/File";
+import Queue from "../../lib/Queue";
+
+import DeliveryReadyMail from "../jobs/DeliveryReadyMail";
 
 class DeliveriController {
   async show(req, res) {
     const rec = await Deliveri.findOne({
       include: [
         {
-          model: Recipients,
+          model: RecipientsModel,
           as: "recipient",
+        },
+        {
+          model: DeliveryManModel,
+          as: "deliveryman",
         },
       ],
       where: {
         id: req.params.id,
       },
     });
+
     return res.json(rec);
   }
 
@@ -26,7 +35,7 @@ class DeliveriController {
     const rec = await Deliveri.findAll({
       include: [
         {
-          model: DeliveryMan,
+          model: DeliveryManModel,
           as: "deliveryman",
           include: [
             {
@@ -37,7 +46,7 @@ class DeliveriController {
         },
 
         {
-          model: Recipients,
+          model: RecipientsModel,
           as: "recipient",
         },
         {
@@ -61,13 +70,33 @@ class DeliveriController {
     const DeliveryMan = deliveryman_id;
     const recipient = recipient_id;
 
-    const rec = await Deliveri.create({
+    const recipientObject = await RecipientsModel.findByPk(recipient);
+
+    if (!recipientObject) {
+      return response
+        .status(401)
+        .json({ error: "Destinatário não encontrado" });
+    }
+
+    const deliveryManOBject = await DeliveryManModel.findByPk(DeliveryMan);
+
+    if (!deliveryManOBject) {
+      return response.status(401).json({ error: "Entregador não encontrado" });
+    }
+
+    const delivery = await Deliveri.create({
       ...req.body,
       recipient_id: recipient,
       deliveryman_id: DeliveryMan,
     });
 
-    return res.json(rec);
+    await Queue.add(DeliveryReadyMail.key, {
+      deliveryman: deliveryManOBject,
+      delivery,
+      recipientObject,
+    });
+
+    return res.json(delivery);
   }
 
   async update(req, res) {
@@ -265,7 +294,7 @@ class DeliveriController {
     const response = await Deliveri.findAll({
       include: [
         {
-          model: DeliveryMan,
+          model: DeliveryManModel,
           as: "deliveryman",
           include: [
             {
@@ -275,7 +304,7 @@ class DeliveriController {
           ],
         },
         {
-          model: Recipients,
+          model: RecipientsModel,
           as: "recipient",
         },
         // ,
@@ -303,7 +332,7 @@ class DeliveriController {
     const response = await Deliveri.findAll({
       include: [
         {
-          model: DeliveryMan,
+          model: DeliveryManModel,
           as: "deliveryman",
           include: [
             {
@@ -313,7 +342,7 @@ class DeliveriController {
           ],
         },
         {
-          model: Recipients,
+          model: RecipientsModel,
           as: "recipient",
         },
         // ,
@@ -360,7 +389,7 @@ class DeliveriController {
       response = await Deliveri.findAll({
         include: [
           {
-            model: DeliveryMan,
+            model: DeliveryManModel,
             as: "deliveryman",
             include: [
               {
@@ -370,7 +399,7 @@ class DeliveriController {
             ],
           },
           {
-            model: Recipients,
+            model: RecipientsModel,
             as: "recipient",
           },
           // ,
