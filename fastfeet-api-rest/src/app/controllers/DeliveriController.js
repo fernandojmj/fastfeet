@@ -22,6 +22,16 @@ class DeliveriController {
         {
           model: DeliveryManModel,
           as: "deliveryman",
+          include: [
+            {
+              model: Files,
+              as: "avatarid",
+            },
+          ],
+        },
+        {
+          model: Files,
+          as: "signature_id",
         },
       ],
       where: {

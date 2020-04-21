@@ -65,7 +65,9 @@ export default function SimpleDialog(props) {
           </DATAS>
           <LINHA></LINHA>
           <span>Assinatura do destinatário</span>
-          {dados.signatureId !== "" ? (
+          {(dados.signatureId !== "") &
+          (dados.signature_id !== undefined) &
+          (dados.signature_id !== null) ? (
             <Signature>
               <img src={dados.signature_id.url} alt=""></img>
             </Signature>
